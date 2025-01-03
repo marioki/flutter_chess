@@ -16,7 +16,16 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const BoardPage(),
+      home:  ChessBoard(boardState: boardState,),
     );
   }
 }
+
+
+List<List<Piece?>> boardState = List.generate(8, (row) {
+  return List.generate(8, (col) {
+    if (row == 1) return Piece(type: 'pawn', color: 'white');
+    if (row == 6) return Piece(type: 'pawn', color: 'black');
+    return null;
+  });
+});
