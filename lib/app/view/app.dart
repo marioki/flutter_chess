@@ -16,11 +16,17 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home:  ChessBoard(boardState: boardState,),
+      home: Scaffold(
+        body: Container(
+          margin: const EdgeInsets.all(32),
+          child: ChessBoard(
+            boardState: boardState,
+          ),
+        ),
+      ),
     );
   }
 }
-
 
 List<List<Piece?>> boardState = List.generate(8, (row) {
   return List.generate(8, (col) {

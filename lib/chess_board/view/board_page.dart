@@ -4,23 +4,39 @@ import 'package:flutter/material.dart';
 class ChessBoard extends StatelessWidget {
   final List<List<Piece?>> boardState; // 8x8 matrix representing pieces
 
-  ChessBoard({required this.boardState});
+  const ChessBoard({required this.boardState, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: List.generate(8, (row) {
-        return Row(
-          children: List.generate(8, (col) {
-            final piece = boardState[row][col];
-            final isLightSquare = (row + col) % 2 == 0;
-            return ChessSquare(
-              row: row,
-              col: col,
-              piece: piece,
-              isLight: isLightSquare,
-            );
-          }),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(8, (col) {
+        return Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(8, (row) {
+              final piece = boardState[row][col];
+              final isLightSquare = (row + col).isEven;
+              if (col == 0 || col == 7) {
+                return Expanded(
+                  child: ChessSquare(
+                    row: row,
+                    col: col,
+                    piece: piece,
+                    isLight: isLightSquare,
+                  ),
+                );
+              }
+              return Expanded(
+                child: ChessSquare(
+                  row: row,
+                  col: col,
+                  piece: piece,
+                  isLight: isLightSquare,
+                ),
+              );
+            }),
+          ),
         );
       }),
     );
@@ -33,11 +49,12 @@ class ChessSquare extends StatelessWidget {
   final Piece? piece;
   final bool isLight;
 
-  ChessSquare({
+  const ChessSquare({
     required this.row,
     required this.col,
     required this.piece,
     required this.isLight,
+    super.key,
   });
 
   @override
@@ -45,8 +62,7 @@ class ChessSquare extends StatelessWidget {
     return DragTarget<Piece>(
       builder: (context, candidateData, rejectedData) {
         return Container(
-          width: 50,
-          height: 50,
+          width: double.maxFinite,
           color: isLight ? Colors.brown[300] : Colors.brown[700],
           child: piece != null
               ? Draggable<Piece>(
@@ -55,10 +71,10 @@ class ChessSquare extends StatelessWidget {
                   childWhenDragging: Container(), // Empty square while dragging
                   child: PieceWidget(piece: piece!),
                 )
-              : Container(),
+              : Text('$row, $col'),
         );
       },
-      onAccept: (piece) {
+      onAcceptWithDetails: (piece) {
         // Handle move validation and state updates here
       },
     );
@@ -68,14 +84,13 @@ class ChessSquare extends StatelessWidget {
 class PieceWidget extends StatelessWidget {
   final Piece piece;
 
-  PieceWidget({required this.piece});
+  const PieceWidget({required this.piece, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/pieces/Piece=${piece.type}, Side=${piece.color}.png',
-      width: 40,
-      height: 40,
+      'assets/pieces/${piece.color}_${piece.type}.png',
+      
     );
   }
 }
