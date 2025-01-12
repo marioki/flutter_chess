@@ -18,7 +18,7 @@ class App extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         body: Container(
-          margin: const EdgeInsets.all(32),
+          margin: const EdgeInsets.all(16),
           child: ChessBoard(
             boardState: boardState,
           ),
