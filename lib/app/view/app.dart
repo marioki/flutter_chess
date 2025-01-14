@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chess/chess_board/bloc/board_bloc.dart';
 import 'package:flutter_chess/chess_board/view/view.dart';
 import 'package:flutter_chess/l10n/l10n.dart';
 
@@ -16,22 +18,21 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: Scaffold(
-        body: Container(
-          margin: const EdgeInsets.all(16),
-          child: ChessBoard(
-            boardState: boardState,
+      home: BlocProvider(
+        create: (context) => BoardBloc(),
+        child: Scaffold(
+          body: Container(
+            margin: const EdgeInsets.all(16),
+            child: BlocBuilder<BoardBloc, BoardState>(
+              builder: (context, state) {
+                return ChessBoard(
+                  boardState: state.pieces,
+                );
+              },
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-List<List<Piece?>> boardState = List.generate(8, (row) {
-  return List.generate(8, (col) {
-    if (row == 1) return Piece(type: 'pawn', color: 'white');
-    if (row == 6) return Piece(type: 'pawn', color: 'black');
-    return null;
-  });
-});

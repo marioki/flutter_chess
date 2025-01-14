@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_chess/chess_board/widgets/widgets.dart';
+import 'package:flutter_chess/models/piece.dart';
 
 class ChessBoard extends StatelessWidget {
   final List<List<Piece?>> boardState;
@@ -138,31 +140,9 @@ class ChessSquare extends StatelessWidget {
         );
       },
       onAcceptWithDetails: (piece) {
-        // Handle move validation and state updates here
+        // Here we send the event to the bloc
+        print('Moved piece ${piece.data.type} to square $col,$row');
       },
     );
   }
-}
-
-class PieceWidget extends StatelessWidget {
-  final Piece piece;
-
-  const PieceWidget({required this.piece, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      'assets/pieces/${piece.color}_${piece.type}.png',
-    );
-  }
-}
-
-class Piece {
-  final String type;
-  final String color;
-
-  Piece({
-    required this.type,
-    required this.color,
-  });
 }

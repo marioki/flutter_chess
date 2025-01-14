@@ -1,6 +1,13 @@
 part of 'board_bloc.dart';
 
-@immutable
-sealed class BoardState {}
+enum BoardStatus { initial, loading, success, failed }
 
-final class BoardInitial extends BoardState {}
+final class BoardState {
+  BoardState({
+    required this.boardStatus,
+    required this.pieces,
+  });
+
+  final BoardStatus boardStatus;
+  final List<List<Piece?>> pieces;
+}

@@ -1,25 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_chess/models/piece.dart';
 
-class Piece extends StatelessWidget {
-  const Piece({
-    required this.label,
-    super.key,
-  });
-  final String label;
+class PieceWidget extends StatelessWidget {
+  const PieceWidget({required this.piece, super.key});
+  final Piece piece;
+
   @override
   Widget build(BuildContext context) {
-    return Draggable(
-      feedback: Material(
-        child: Container(
-          decoration: const BoxDecoration(color: Colors.lightBlue),
-          child:  Text(label),
-        ),
-      ),
-      child: Container(
-        decoration: const BoxDecoration(color: Colors.lightBlue),
-        child:  Text(label),
-      ),
+    return Image.asset(
+      'assets/pieces/${piece.color}_${piece.type}.png',
     );
   }
 }
