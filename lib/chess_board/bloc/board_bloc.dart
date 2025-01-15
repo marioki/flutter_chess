@@ -13,10 +13,11 @@ part 'board_state.dart';
 class BoardBloc extends Bloc<BoardEvent, BoardState> {
   BoardBloc() : super(BoardState(boardStatus: BoardStatus.initial, pieces: gameInitialPieces)) {
     on<BoardPieceMoved>(onBoardPieceMoved);
+    on<BoardPieceSelected>(onBoardPieceSelected);
   }
 
   FutureOr<void> onBoardPieceMoved(BoardPieceMoved event, Emitter<BoardState> emit) {
-    final origin = event.origin;
+    final origin = event.piece.currentPosition;
     final target = event.target;
     if (origin == target) {
       print('Ignore same square move');
@@ -24,13 +25,12 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
     }
     final newPieces = state.pieces;
     print(
-        'Moving ${event.piece.color} ${event.piece.type} from \nold ${event.origin.file} ${event.origin.rank}\nnew ${event.target.file} ${event.target.rank}');
+        'Moving ${event.piece.color} ${event.piece.type} from \nold ${origin.file} ${origin.rank}\nnew ${event.target.file} ${event.target.rank}');
 
-    
     //Move Piece to Target square.
-    newPieces[event.origin.rank][event.origin.file] = null;
-    newPieces[event.target.rank][event.target.file] = event.piece
-        .copyWith(currentPosition: Coordinate(file: event.target.file, rank: event.target.rank));
+    newPieces[origin.rank][origin.file] = null;
+    newPieces[target.rank][target.file] =
+        event.piece.copyWith(currentPosition: Coordinate(file: target.file, rank: target.rank));
     emit(state.copyWith(pieces: newPieces));
 
     // for (final row in state.pieces) {
@@ -39,6 +39,8 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
     //   }
     // }
   }
+
+  FutureOr<void> onBoardPieceSelected(BoardPieceSelected event, Emitter<BoardState> emit) {}
 }
 
 List<List<Piece?>> gameInitialPieces = List.generate(8, (row) {

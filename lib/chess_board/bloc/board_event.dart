@@ -6,18 +6,17 @@ sealed class BoardEvent {}
 
 class BoardPieceMoved extends BoardEvent {
   BoardPieceMoved({
-    required this.origin,
     required this.target,
     required this.piece,
   });
 
-  final Coordinate origin;
   final Coordinate target;
   final Piece piece;
 }
 
 class BoardPieceSelected extends BoardEvent {
-  BoardPieceSelected();
+  BoardPieceSelected(this.piece);
+  final Piece piece;
 
   @override
   List<Object> get props => [];

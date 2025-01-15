@@ -145,7 +145,6 @@ class ChessSquare extends StatelessWidget {
       onAcceptWithDetails: (pieceDraggable) {
         // Here we send the event to the bloc
         BlocProvider.of<BoardBloc>(context).add(BoardPieceMoved(
-          origin: pieceDraggable.data.currentPosition,
           target: Coordinate(file: col, rank: row),
           piece: pieceDraggable.data,
         ));
