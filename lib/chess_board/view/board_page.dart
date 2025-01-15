@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chess/chess_board/bloc/board_bloc.dart';
 import 'package:flutter_chess/chess_board/widgets/widgets.dart';
+import 'package:flutter_chess/models/coordinate.dart';
 import 'package:flutter_chess/models/piece.dart';
 
 class ChessBoard extends StatelessWidget {
@@ -139,9 +142,13 @@ class ChessSquare extends StatelessWidget {
               : Text('$row, $col'),
         );
       },
-      onAcceptWithDetails: (piece) {
+      onAcceptWithDetails: (pieceDraggable) {
         // Here we send the event to the bloc
-        print('Moved piece ${piece.data.type} to square $col,$row');
+        BlocProvider.of<BoardBloc>(context).add(BoardPieceMoved(
+          origin: pieceDraggable.data.currentPosition,
+          target: Coordinate(file: col, rank: row),
+          piece: pieceDraggable.data,
+        ));
       },
     );
   }
