@@ -12,6 +12,7 @@ class BoardState {
 
   final BoardStatus boardStatus;
   final List<List<Piece?>> pieces;
+  
 
   BoardState copyWith({
     BoardStatus? boardStatus,
