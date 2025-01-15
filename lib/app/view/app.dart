@@ -25,10 +25,8 @@ class App extends StatelessWidget {
             margin: const EdgeInsets.all(16),
             child: BlocBuilder<BoardBloc, BoardState>(
               builder: (context, state) {
-                print('### Rebuilding Board');
-                return ChessBoard(
-                  boardState: state.pieces,
-                );
+                print('--- Rebuilding Board ---');
+                return ChessBoard(boardSquares: state.board);
               },
             ),
           ),

@@ -7,20 +7,19 @@ enum BoardStatus { initial, loading, success, failed }
 class BoardState {
   const BoardState({
     required this.boardStatus,
-    required this.pieces,
+    required this.board,
   });
 
   final BoardStatus boardStatus;
-  final List<List<Piece?>> pieces;
-  
+  final List<List<SquareData>> board;
 
   BoardState copyWith({
     BoardStatus? boardStatus,
-    List<List<Piece?>>? pieces,
+    List<List<SquareData>>? board,
   }) {
     return BoardState(
       boardStatus: boardStatus ?? this.boardStatus,
-      pieces: pieces ?? this.pieces,
+      board: board ?? this.board,
     );
   }
 }
