@@ -15,9 +15,9 @@ class BoardPieceMoved extends BoardEvent {
 }
 
 class BoardPieceSelected extends BoardEvent {
-  BoardPieceSelected(this.piece);
+  BoardPieceSelected({required this.piece});
   final Piece piece;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [piece];
 }

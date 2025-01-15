@@ -25,7 +25,7 @@ class BoardSquare extends StatelessWidget {
               width: double.maxFinite,
               height: double.maxFinite,
               color: isLight ? Colors.brown[300] : Colors.brown[700],
-              child: Text('${squareData.coordinate.rank}, ${squareData.coordinate.file}'),
+              child: Text('${squareData.coordinate.file}, ${squareData.coordinate.rank}, '),
             ),
             if (squareData.isHighLighted)
               Container(color: Colors.green.withAlpha(150))
@@ -41,6 +41,10 @@ class BoardSquare extends StatelessWidget {
                   final size = renderBox.size;
                   final centerOffset = Offset(size.height / 8, size.width / 8);
                   return centerOffset;
+                },
+                onDragStarted: () {
+                  BlocProvider.of<BoardBloc>(context)
+                      .add(BoardPieceSelected(piece: squareData.piece!));
                 },
                 childWhenDragging: Container(), // Empty square while dragging
                 child: SizedBox.expand(
