@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chess/chess_board/bloc/board_bloc.dart';
 import 'package:flutter_chess/chess_board/widgets/piece.dart';
-import 'package:flutter_chess/models/coordinate.dart';
-import 'package:flutter_chess/models/piece.dart';
-import 'package:flutter_chess/models/square.dart';
+import 'package:flutter_chess/chess_board/models/coordinate.dart';
+import 'package:flutter_chess/chess_board/models/piece.dart';
+import 'package:flutter_chess/chess_board/models/square.dart';
 
 class BoardSquare extends StatelessWidget {
   const BoardSquare({

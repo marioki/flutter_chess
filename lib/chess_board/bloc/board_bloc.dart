@@ -4,9 +4,9 @@ import 'dart:ffi';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chess/models/coordinate.dart';
-import 'package:flutter_chess/models/piece.dart';
-import 'package:flutter_chess/models/square.dart';
+import 'package:flutter_chess/chess_board/models/coordinate.dart';
+import 'package:flutter_chess/chess_board/models/piece.dart';
+import 'package:flutter_chess/chess_board/models/square.dart';
 import 'package:meta/meta.dart';
 
 part 'board_event.dart';

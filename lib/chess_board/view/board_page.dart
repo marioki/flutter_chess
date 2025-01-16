@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_chess/chess_board/widgets/board_square.dart';
-import 'package:flutter_chess/models/square.dart';
+import 'package:flutter_chess/chess_board/models/square.dart';
 
 class ChessBoard extends StatelessWidget {
   final List<List<SquareData>> boardSquares;
