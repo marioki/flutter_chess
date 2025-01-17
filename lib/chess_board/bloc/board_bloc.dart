@@ -21,15 +21,25 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
   FutureOr<void> onBoardPieceMoved(BoardPieceMoved event, Emitter<BoardState> emit) {
     final origin = event.piece.currentPosition;
     final target = event.target;
+    //Do nothing if placed on the same square
     if (origin == target) {
       print('Ignore same square move');
       return Void;
     }
-    final newBoard = resetBoardHighlights(state.board);
 
-    print(
-      'Moving ${event.piece.color} ${event.piece.type} from \nold ${origin.file} ${origin.rank}\nnew ${event.target.file} ${event.target.rank}',
-    );
+    final newBoard = resetBoardHighlights(state.board);
+    /**
+     * - Check if the target square is on the posible moves.
+     * 
+     * 
+     */
+
+    final (highLightedBoard, posibleMoves) = generateAvailableMoves(state.board, event.piece);
+
+    if (!posibleMoves.contains(target)) {
+      print('Move is not posible');
+      return Void;
+    }
 
     //Move Piece to Target square.
     newBoard[origin.rank][origin.file] =
@@ -58,7 +68,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
      */
     final piece = event.piece;
 
-    final newBoard = generateAvailableMoves(state.board, event.piece);
+    final (newBoard, posibleMoves) = generateAvailableMoves(state.board, event.piece);
     emit(state.copyWith(selectedPiece: piece, board: newBoard));
   }
 }
@@ -70,15 +80,18 @@ List<List<SquareData>> resetBoardHighlights(List<List<SquareData>> oldBoard) {
   return newBoard;
 }
 
-List<List<SquareData>> generateAvailableMoves(List<List<SquareData>> board, Piece selectedPiece) {
+(List<List<SquareData>> board, List<Coordinate> moves) generateAvailableMoves(
+  List<List<SquareData>> oldBoard,
+  Piece selectedPiece,
+) {
   final posibleMoves = <Coordinate>[];
-  final cleanBoard = resetBoardHighlights(board);
+  final newBoard = resetBoardHighlights(oldBoard);
   final coordinate = selectedPiece.currentPosition;
   final isFirstMove = coordinate.rank == 6;
 
   // For White Pawns
   if (coordinate.rank < 1) {
-    return cleanBoard;
+    return (newBoard, []);
   }
 
   SquareData? ahead;
@@ -88,21 +101,21 @@ List<List<SquareData>> generateAvailableMoves(List<List<SquareData>> board, Piec
 
   //Check ahead
   if (coordinate.rank > 0) {
-    ahead = board[coordinate.rank - 1][coordinate.file];
+    ahead = oldBoard[coordinate.rank - 1][coordinate.file];
   }
 
   //Check ahead two steps
   if (isFirstMove) {
-    ahead2Steps = board[coordinate.rank - 2][coordinate.file];
+    ahead2Steps = oldBoard[coordinate.rank - 2][coordinate.file];
   }
 
   //Check diagonalLeft
   if (coordinate.file > 0) {
-    diagonalLeft = board[coordinate.rank - 1][coordinate.file - 1];
+    diagonalLeft = oldBoard[coordinate.rank - 1][coordinate.file - 1];
   }
   //Check diagonalRight
   if (coordinate.file < 7) {
-    diagonalRight = board[coordinate.rank - 1][coordinate.file + 1];
+    diagonalRight = oldBoard[coordinate.rank - 1][coordinate.file + 1];
   }
 
   if (diagonalLeft?.piece?.color == 'black') {
@@ -143,14 +156,14 @@ List<List<SquareData>> generateAvailableMoves(List<List<SquareData>> board, Piec
 
   //Highlight all possible moves
   for (final move in posibleMoves) {
-    cleanBoard[move.rank][move.file] = SquareData(
+    newBoard[move.rank][move.file] = SquareData(
       isHighLighted: true,
-      cleanBoard[move.rank][move.file].piece,
-      coordinate: cleanBoard[move.rank][move.file].coordinate,
+      newBoard[move.rank][move.file].piece,
+      coordinate: newBoard[move.rank][move.file].coordinate,
     );
   }
 
-  return cleanBoard;
+  return (newBoard, posibleMoves);
 }
 
 List<List<SquareData>> gameInitialPieces = List.generate(8, (row) {
