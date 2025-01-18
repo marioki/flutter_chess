@@ -10,12 +10,12 @@ class SquareData {
   });
   final Coordinate coordinate;
   final bool isHighLighted;
-  final Piece? piece;
+  final ChessPiece? piece;
 
   SquareData copyWith({
     Coordinate? coordinate,
     bool? isHighLighted,
-    Piece? piece,
+    ChessPiece? piece,
   }) {
     return SquareData(
       piece ?? this.piece,

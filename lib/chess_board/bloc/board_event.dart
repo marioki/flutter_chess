@@ -11,12 +11,12 @@ class BoardPieceMoved extends BoardEvent {
   });
 
   final Coordinate target;
-  final Piece piece;
+  final ChessPiece piece;
 }
 
 class BoardPieceSelected extends BoardEvent {
   BoardPieceSelected({required this.piece});
-  final Piece piece;
+  final ChessPiece piece;
 
   @override
   List<Object> get props => [piece];

@@ -3,7 +3,7 @@ import 'package:flutter_chess/chess_board/models/piece.dart';
 
 class PieceWidget extends StatelessWidget {
   const PieceWidget({required this.piece, super.key});
-  final Piece piece;
+  final ChessPiece piece;
 
   @override
   Widget build(BuildContext context) {

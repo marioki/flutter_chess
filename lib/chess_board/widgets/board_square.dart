@@ -17,7 +17,7 @@ class BoardSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DragTarget<Piece>(
+    return DragTarget<ChessPiece>(
       builder: (context, candidateData, rejectedData) {
         return Stack(
           children: [
@@ -32,7 +32,7 @@ class BoardSquare extends StatelessWidget {
             else
               Container(),
             if (squareData.piece != null)
-              Draggable<Piece>(
+              Draggable<ChessPiece>(
                 data: squareData.piece,
                 feedback: PieceWidget(piece: squareData.piece!),
                 dragAnchorStrategy:

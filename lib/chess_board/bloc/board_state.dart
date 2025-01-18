@@ -13,12 +13,12 @@ class BoardState {
 
   final BoardStatus boardStatus;
   final List<List<SquareData>> board;
-  final Piece? selectedPiece;
+  final ChessPiece? selectedPiece;
 
   BoardState copyWith({
     BoardStatus? boardStatus,
     List<List<SquareData>>? board,
-    Piece? selectedPiece,
+    ChessPiece? selectedPiece,
   }) {
     return BoardState(
       boardStatus: boardStatus ?? this.boardStatus,
