@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
@@ -31,7 +30,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
     //Do nothing if placed on the same square
     if (origin == target) {
       print('Ignore same square move');
-      return Void;
+      return Future.value();
     }
 
     final newBoard = resetBoardHighlights(state.board);
@@ -44,7 +43,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
 
     if (!posibleMoves.contains(target)) {
       print('Move is not posible');
-      return Void;
+      return Future.value();
     }
 
     //Move Piece to Target square.
