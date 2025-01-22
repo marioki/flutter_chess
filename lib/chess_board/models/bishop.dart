@@ -109,7 +109,7 @@ class Bishop extends ChessPiece {
       while (fileIndex < 7 && rankIndex < 7 && !isOccupied) {
         counter += 1;
         fileIndex += 1;
-        rankIndex -= 1;
+        rankIndex += 1;
         final nextSquare = cleanBoard[(currentPosition.rank + counter).clamp(0, 7)]
             [(currentPosition.file + counter).clamp(0, 7)];
 
