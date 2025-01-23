@@ -19,7 +19,10 @@ part 'board_event.dart';
 part 'board_state.dart';
 
 class BoardBloc extends Bloc<BoardEvent, BoardState> {
-  BoardBloc() : super(BoardState(boardStatus: BoardStatus.initial, board: gameInitialPieces)) {
+  BoardBloc()
+      : super(
+          BoardState(boardStatus: BoardStatus.initial, board: gameInitialPieces, totalMoves: 0),
+        ) {
     on<BoardPieceMoved>(onBoardPieceMoved);
     on<BoardPieceSelected>(onBoardPieceSelected);
   }
@@ -27,6 +30,19 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
   FutureOr<void> onBoardPieceMoved(BoardPieceMoved event, Emitter<BoardState> emit) {
     final origin = event.piece.currentPosition;
     final target = event.target;
+
+    final piece = event.piece;
+    if (piece.color == 'white' && state.totalMoves.isOdd) {
+      print('${state.totalMoves} is odd and piece is ${piece.color}');
+      print('Opponent\'s turn');
+      return Future.value();
+    }
+    if (piece.color == 'black' && state.totalMoves.isEven) {
+      print('${state.totalMoves} is even and piece is ${piece.color}');
+      print('Opponent\'s turn');
+      return Future.value();
+    }
+
     //Do nothing if placed on the same square
     if (origin == target) {
       print('Ignore same square move');
@@ -54,7 +70,7 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
       coordinate: Coordinate(file: target.file, rank: target.rank),
     );
 
-    emit(state.copyWith(board: newBoard));
+    emit(state.copyWith(board: newBoard, totalMoves: state.totalMoves + 1));
 
     // for (final row in state.pieces) {
     //   if (kDebugMode) {
@@ -72,6 +88,17 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
       - Emit Selected piece and highlighted squares to show available moves.
      */
     final piece = event.piece;
+    if (piece.color == 'white' && state.totalMoves.isOdd) {
+      print('${state.totalMoves} is odd and piece is ${piece.color}');
+      print('Opponent\'s turn');
+      return Future.value();
+    }
+    if (piece.color == 'black' && state.totalMoves.isEven) {
+      print('${state.totalMoves} is even and piece is ${piece.color}');
+      print('Opponent\'s turn');
+      return Future.value();
+    }
+
     final cleanBoard = resetBoardHighlights(state.board);
 
     final (newBoard, posibleMoves) = piece.generatePossibleMoves(cleanBoard);

@@ -21,15 +21,16 @@ class App extends StatelessWidget {
       home: BlocProvider(
         create: (context) => BoardBloc(),
         child: Scaffold(
-        
           body: SafeArea(
             child: Container(
               margin: const EdgeInsets.all(16),
               child: BlocBuilder<BoardBloc, BoardState>(
                 builder: (context, state) {
                   print('--- Rebuilding Board ---');
-                  return AspectRatio(aspectRatio: 1,
-                  child: ChessBoard(boardSquares: state.board));
+                  return AspectRatio(
+                    aspectRatio: 1,
+                    child: ChessBoard(boardSquares: state.board),
+                  );
                 },
               ),
             ),
