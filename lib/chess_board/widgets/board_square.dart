@@ -27,10 +27,10 @@ class BoardSquare extends StatelessWidget {
               color: isLight
                   ? const Color.fromRGBO(69, 123, 157, 1)
                   : const Color.fromRGBO(241, 250, 250, 1),
-              child: Text('${squareData.coordinate.file}, ${squareData.coordinate.rank}, '),
+              //child: Text('${squareData.coordinate.file}, ${squareData.coordinate.rank}, '),
             ),
             if (squareData.isHighLighted)
-              Container(color: Colors.green.withAlpha(150))
+              Container(color: Colors.green.withAlpha(100))
             else
               Container(),
             if (squareData.piece != null)

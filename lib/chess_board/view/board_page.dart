@@ -50,30 +50,33 @@ class ChessBoard extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Expanded(
-                child: Row(
-                  children: List.generate(8, (col) {
-                    return Expanded(
-                      child: Column(
-                        children: List.generate(8, (row) {
-                          final isLightSquare = (row + col).isEven;
-                          if (col == 0 || col == 7) {
+                child: Container(
+                  decoration: BoxDecoration(border: Border.all()),
+                  child: Row(
+                    children: List.generate(8, (col) {
+                      return Expanded(
+                        child: Column(
+                          children: List.generate(8, (row) {
+                            final isLightSquare = (row + col).isEven;
+                            if (col == 0 || col == 7) {
+                              return Expanded(
+                                child: BoardSquare(
+                                  squareData: boardSquares[row][col],
+                                  isLight: isLightSquare,
+                                ),
+                              );
+                            }
                             return Expanded(
                               child: BoardSquare(
                                 squareData: boardSquares[row][col],
                                 isLight: isLightSquare,
                               ),
                             );
-                          }
-                          return Expanded(
-                            child: BoardSquare(
-                              squareData: boardSquares[row][col],
-                              isLight: isLightSquare,
-                            ),
-                          );
-                        }),
-                      ),
-                    );
-                  }),
+                          }),
+                        ),
+                      );
+                    }),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
