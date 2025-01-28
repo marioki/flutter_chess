@@ -29,4 +29,9 @@ class BoardState {
       totalMoves: totalMoves ?? this.totalMoves,
     );
   }
+
+  @override
+  String toString() {
+    return '$board';
+  }
 }

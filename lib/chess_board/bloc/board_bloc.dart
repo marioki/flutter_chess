@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_chess/chess_board/models/bishop.dart';
 import 'package:flutter_chess/chess_board/models/black_pawn.dart';
 import 'package:flutter_chess/chess_board/models/coordinate.dart';
@@ -30,53 +29,84 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
   FutureOr<void> onBoardPieceMoved(BoardPieceMoved event, Emitter<BoardState> emit) {
     final origin = event.piece.currentPosition;
     final target = event.target;
-
     final piece = event.piece;
+
+    //Handle Turns
     if (piece.color == 'white' && state.totalMoves.isOdd) {
-      print('${state.totalMoves} is odd and piece is ${piece.color}');
-      print('Opponent\'s turn');
       return Future.value();
     }
     if (piece.color == 'black' && state.totalMoves.isEven) {
-      print('${state.totalMoves} is even and piece is ${piece.color}');
-      print('Opponent\'s turn');
       return Future.value();
     }
 
     //Do nothing if placed on the same square
-    if (origin == target) {
-      print('Ignore same square move');
+    if (origin == target.coordinate) {
       return Future.value();
     }
 
-    final newBoard = resetBoardHighlights(state.board);
-    /**
-     * - Check if the target square is on the posible moves.
-     * 
-     */
+    //Clean Board from previous selected piece
+    var newBoard = resetBoardHighlights(state.board);
 
-    final (highLightedBoard, posibleMoves) = event.piece.generatePossibleMoves(state.board);
+    // Check if the target square is on the posible moves.
+    final (highLightedBoard, posibleMoves) = event.piece.generatePossibleMoves(newBoard);
 
-    if (!posibleMoves.contains(target)) {
+    //Remove previous en pessant squared if Exist
+    newBoard = resetEnPassant(newBoard);
+
+    if (!posibleMoves.contains(target.coordinate)) {
       print('Move is not posible');
       return Future.value();
     }
 
-    //Move Piece to Target square.
+    //If it is a pawn then setup en passant square
+    if (piece.type == 'pawn' && (origin.rank - target.coordinate.rank).abs() == 2) {
+      if (piece.color == 'white') {
+        newBoard[origin.rank - 1][origin.file] = SquareData(
+          null,
+          enPassant: true,
+          coordinate: Coordinate(rank: origin.rank - 1, file: origin.file),
+        );
+      } else {
+        newBoard[origin.rank + 1][origin.file] = SquareData(
+          null,
+          enPassant: true,
+          coordinate: Coordinate(rank: origin.rank + 1, file: origin.file),
+        );
+      }
+    }
+
+    //Remove piece from origin square
     newBoard[origin.rank][origin.file] =
         SquareData(null, coordinate: Coordinate(file: origin.file, rank: origin.rank));
-    newBoard[target.rank][target.file] = SquareData(
-      event.piece.copyWith(currentPosition: Coordinate(file: target.file, rank: target.rank)),
-      coordinate: Coordinate(file: target.file, rank: target.rank),
+
+    //add piece to target square
+    newBoard[target.coordinate.rank][target.coordinate.file] = SquareData(
+      event.piece.copyWith(
+        currentPosition: Coordinate(file: target.coordinate.file, rank: target.coordinate.rank),
+      ),
+      coordinate: Coordinate(file: target.coordinate.file, rank: target.coordinate.rank),
     );
+    if (target.enPassant) {
+      if (piece.color == 'black') {
+        newBoard[target.coordinate.rank - 1][target.coordinate.file] = SquareData(
+          null,
+          coordinate: Coordinate(rank: target.coordinate.rank - 1, file: target.coordinate.file),
+        );
+      } else {
+        newBoard[target.coordinate.rank + 1][target.coordinate.file] = SquareData(
+          null,
+          coordinate: Coordinate(rank: target.coordinate.rank - 1, file: target.coordinate.file),
+        );
+      }
+    }
 
     emit(state.copyWith(board: newBoard, totalMoves: state.totalMoves + 1));
 
-    // for (final row in state.pieces) {
-    //   if (kDebugMode) {
-    //     print(row.map((piece) => piece?.type ?? '[     ]').toList());
-    //   }
-    // }
+    for (final row in state.board) {
+      if (kDebugMode) {
+        print(row.map((square) => square.piece ?? square.enPassant).toList());
+      }
+    }
   }
 
   FutureOr<void> onBoardPieceSelected(BoardPieceSelected event, Emitter<BoardState> emit) {
@@ -89,26 +119,50 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
      */
     final piece = event.piece;
     if (piece.color == 'white' && state.totalMoves.isOdd) {
-      print('${state.totalMoves} is odd and piece is ${piece.color}');
-      print('Opponent\'s turn');
       return Future.value();
     }
     if (piece.color == 'black' && state.totalMoves.isEven) {
-      print('${state.totalMoves} is even and piece is ${piece.color}');
-      print('Opponent\'s turn');
       return Future.value();
     }
 
     final cleanBoard = resetBoardHighlights(state.board);
 
     final (newBoard, posibleMoves) = piece.generatePossibleMoves(cleanBoard);
+
+    for (final row in state.board) {
+      if (kDebugMode) {
+        print(row.map((square) => square.piece ?? square.enPassant).toList());
+      }
+    }
     emit(state.copyWith(selectedPiece: piece, board: newBoard));
   }
 }
 
+/// Takes in a board List<List<SquareData>> and returns the board without highlighted squares
+/// Does not removes en passant squares.
 List<List<SquareData>> resetBoardHighlights(List<List<SquareData>> oldBoard) {
+  final cleanBoard = oldBoard.map((rank) {
+    return rank
+        .map(
+          (squareData) => squareData.copyWith(
+            isHighLighted: false,
+          ),
+        )
+        .toList();
+  }).toList();
+  return cleanBoard;
+}
+
+List<List<SquareData>> resetEnPassant(List<List<SquareData>> oldBoard) {
   final newBoard = oldBoard.map((rank) {
-    return rank.map((squareData) => squareData.copyWith(isHighLighted: false)).toList();
+    return rank
+        .map(
+          (squareData) => squareData.copyWith(
+            enPassant: false,
+            isHighLighted: false,
+          ),
+        )
+        .toList();
   }).toList();
   return newBoard;
 }

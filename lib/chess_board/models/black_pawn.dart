@@ -46,7 +46,9 @@ class BlackPawn extends ChessPiece {
       diagonalRight = cleanBoard[coordinate.rank + 1][coordinate.file + 1];
     }
 
-    if (diagonalLeft?.piece?.color == 'white') {
+    if (diagonalLeft?.piece?.color == 'white' || (diagonalLeft?.enPassant ?? false)) {
+      print(' added En Passant is Possible to the west diagonal');
+
       posibleMoves.add(
         Coordinate(
           file: diagonalLeft!.coordinate.file,
@@ -55,7 +57,8 @@ class BlackPawn extends ChessPiece {
       );
     }
 
-    if (diagonalRight?.piece?.color == 'white') {
+    if (diagonalRight?.piece?.color == 'white' || (diagonalRight?.enPassant ?? false)) {
+      print(' added En Passant is Possible to the east diagonal');
       posibleMoves.add(
         Coordinate(
           file: diagonalRight!.coordinate.file,
@@ -83,11 +86,8 @@ class BlackPawn extends ChessPiece {
     }
     //Highlight all possible moves
     for (final move in posibleMoves) {
-      cleanBoard[move.rank][move.file] = SquareData(
-        isHighLighted: true,
-        cleanBoard[move.rank][move.file].piece,
-        coordinate: cleanBoard[move.rank][move.file].coordinate,
-      );
+      cleanBoard[move.rank][move.file] =
+          cleanBoard[move.rank][move.file].copyWith(isHighLighted: true);
     }
     return (cleanBoard, posibleMoves);
   }

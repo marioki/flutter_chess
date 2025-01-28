@@ -10,7 +10,7 @@ class BoardPieceMoved extends BoardEvent {
     required this.piece,
   });
 
-  final Coordinate target;
+  final SquareData target;
   final ChessPiece piece;
 }
 

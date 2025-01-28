@@ -61,7 +61,7 @@ class BoardSquare extends StatelessWidget {
       onAcceptWithDetails: (pieceDraggable) {
         BlocProvider.of<BoardBloc>(context).add(
           BoardPieceMoved(
-            target: squareData.coordinate,
+            target: squareData,
             piece: pieceDraggable.data,
           ),
         );
