@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chess/chess_board/bloc/board_bloc.dart';
-import 'package:flutter_chess/chess_board/widgets/piece.dart';
-import 'package:flutter_chess/chess_board/models/coordinate.dart';
 import 'package:flutter_chess/chess_board/models/piece.dart';
 import 'package:flutter_chess/chess_board/models/square.dart';
+import 'package:flutter_chess/chess_board/widgets/piece.dart';
 
 class BoardSquare extends StatelessWidget {
   const BoardSquare({
@@ -44,10 +41,7 @@ class BoardSquare extends StatelessWidget {
                   final centerOffset = Offset(size.height / 8, size.width / 8);
                   return centerOffset;
                 },
-                onDragStarted: () {
-                  BlocProvider.of<BoardBloc>(context)
-                      .add(BoardPieceSelected(piece: squareData.piece!));
-                },
+                onDragStarted: () {},
                 childWhenDragging: Container(), // Empty square while dragging
                 child: SizedBox.expand(
                   child: PieceWidget(piece: squareData.piece!),
@@ -58,14 +52,7 @@ class BoardSquare extends StatelessWidget {
           ],
         );
       },
-      onAcceptWithDetails: (pieceDraggable) {
-        BlocProvider.of<BoardBloc>(context).add(
-          BoardPieceMoved(
-            target: squareData,
-            piece: pieceDraggable.data,
-          ),
-        );
-      },
+      onAcceptWithDetails: (pieceDraggable) {},
     );
   }
 }

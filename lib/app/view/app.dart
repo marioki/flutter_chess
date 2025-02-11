@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chess/chess_board/bloc/board_bloc.dart';
+
 import 'package:flutter_chess/chess_board/view/view.dart';
 import 'package:flutter_chess/l10n/l10n.dart';
 
@@ -18,22 +17,11 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: BlocProvider(
-        create: (context) => BoardBloc(),
-        child: Scaffold(
-          body: SafeArea(
-            child: Container(
-              margin: const EdgeInsets.all(16),
-              child: BlocBuilder<BoardBloc, BoardState>(
-                builder: (context, state) {
-                  print('--- Rebuilding Board ---');
-                  return AspectRatio(
-                    aspectRatio: 1,
-                    child: ChessBoard(boardSquares: state.board),
-                  );
-                },
-              ),
-            ),
+      home: Scaffold(
+        body: SafeArea(
+          child: Container(
+            margin: const EdgeInsets.all(16),
+            child: ChessBoard(),
           ),
         ),
       ),

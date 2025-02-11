@@ -27,9 +27,4 @@ class SquareData {
       enPassant: enPassant ?? this.enPassant,
     );
   }
-
-  @override
-  String toString() {
-    return piece?.type ?? '[$enPassant]';
-  }
 }

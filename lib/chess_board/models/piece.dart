@@ -1,7 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter_chess/chess_board/models/coordinate.dart';
-import 'package:flutter_chess/chess_board/models/square.dart';
+
+import 'package:flutter_chess/chess_board/helpers/parse_fen_string.dart';
 import 'package:flutter_chess/chess_board/view/view.dart';
+
+enum Side { white, black }
+
+enum PieceType { pawn, rook, knight, bishop, queen, king }
 
 class ChessPiece {
   ChessPiece({
