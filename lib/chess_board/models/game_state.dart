@@ -1,3 +1,4 @@
+import 'package:flutter_chess/chess_board/models/coordinate.dart';
 import 'package:flutter_chess/chess_board/models/piece.dart';
 import 'package:flutter_chess/chess_board/models/square.dart';
 
@@ -18,7 +19,7 @@ class GameState {
   bool whiteKingSideCasttle;
   bool blackQueenSideCasttle;
   bool blackKingSideCasttle;
-  SquareData? enPassant;
+  Coordinate? enPassant;
   int halfMoveClock;
   int fullMoveNumber;
   List<List<SquareData>> pieceMatrix;

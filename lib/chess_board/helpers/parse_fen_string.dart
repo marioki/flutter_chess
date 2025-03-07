@@ -22,7 +22,25 @@ GameState parseFenString(String fen) {
     blackKingSideCasttle: castleSegment.contains('k'),
     halfMoveClock: int.parse(halfMoveClockSegment),
     fullMoveNumber: int.parse(fullMoveClockSegment),
+    enPassant: coordinateFromAnSquare(enPassantSegment),
   );
+}
+
+///takes in a single square in long algebraic notation and returns a Coordinate Object.
+Coordinate? coordinateFromAnSquare(String an) {
+  if (an == '-') {
+    return null;
+  }
+  const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+  final file = boardLetters.indexOf(an[0]);
+  final rank = int.parse(an[1]) - 1;
+  return Coordinate(file: file, rank: rank);
+}
+
+/// Takes in a Coordinate Object and returns the corresponding square name in algebraic notation
+String anSquareFromCoordinate(Coordinate coordinate) {
+  const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+  return '${boardLetters[coordinate.file]}${coordinate.rank}';
 }
 
 List<List<SquareData>> generatePieceMatrix(String piecesSegment) {
