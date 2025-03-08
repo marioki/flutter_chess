@@ -2,14 +2,20 @@
 import 'package:equatable/equatable.dart';
 
 class Coordinate extends Equatable {
-  final int file;
-  final int rank;
+  final int _file;
+  final int _rank;
 
   const Coordinate({
-    required this.file,
-    required this.rank,
-  });
+    required int file,
+    required int rank,
+  })  : _rank = rank,
+        _file = file;
+
+  String get displayRank => (_rank + 1).toString();
+  String get displayFile => String.fromCharCode(_file + 97);
+
+  String get algebraic => '$displayFile$displayRank';
 
   @override
-  List<Object?> get props => [file, rank];
+  List<Object?> get props => [displayFile, _rank];
 }

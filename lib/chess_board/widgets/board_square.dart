@@ -1,4 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_chess/chess_board/helpers/parse_fen_string.dart';
+
+import 'package:flutter_chess/chess_board/models/coordinate.dart';
+import 'package:flutter_chess/chess_board/models/lan_move.dart';
 import 'package:flutter_chess/chess_board/models/piece.dart';
 import 'package:flutter_chess/chess_board/models/square.dart';
 import 'package:flutter_chess/chess_board/widgets/piece.dart';
@@ -14,7 +19,7 @@ class BoardSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DragTarget<ChessPiece>(
+    return DragTarget<SquareData>(
       builder: (context, candidateData, rejectedData) {
         return Stack(
           children: [
@@ -24,15 +29,15 @@ class BoardSquare extends StatelessWidget {
               color: isLight
                   ? const Color.fromRGBO(69, 123, 157, 1)
                   : const Color.fromRGBO(241, 250, 250, 1),
-              //child: Text('${squareData.coordinate.file}, ${squareData.coordinate.rank}, '),
+              child: Text('${squareData.coordinate.displayFile}, ${squareData.coordinate.displayRank}, '),
             ),
             if (squareData.isHighLighted)
               Container(color: Colors.green.withAlpha(100))
             else
               Container(),
             if (squareData.piece != null)
-              Draggable<ChessPiece>(
-                data: squareData.piece,
+              Draggable<SquareData>(
+                data: squareData,
                 feedback: PieceWidget(piece: squareData.piece!),
                 dragAnchorStrategy:
                     (Draggable<Object> draggable, BuildContext context, Offset position) {
@@ -41,7 +46,9 @@ class BoardSquare extends StatelessWidget {
                   final centerOffset = Offset(size.height / 8, size.width / 8);
                   return centerOffset;
                 },
-                onDragStarted: () {},
+                onDragStarted: () {
+                  print('Drag Started');
+                },
                 childWhenDragging: Container(), // Empty square while dragging
                 child: SizedBox.expand(
                   child: PieceWidget(piece: squareData.piece!),
@@ -52,7 +59,32 @@ class BoardSquare extends StatelessWidget {
           ],
         );
       },
-      onAcceptWithDetails: (pieceDraggable) {},
+      onAcceptWithDetails: (pieceDraggable) {
+        final lanMove = LANMove(
+          pieceType: pieceDraggable.data.piece!.type,
+          origin: pieceDraggable.data.coordinate,
+          target: squareData.coordinate,
+        );
+        print(lanMove);
+        // Send lanMove to the engine for further processing
+      },
     );
+  }
+}
+
+String pieceCharacterFromType(PieceType pieceType) {
+  switch (pieceType) {
+    case PieceType.pawn:
+      return '';
+    case PieceType.rook:
+      return 'R';
+    case PieceType.knight:
+      return 'N';
+    case PieceType.bishop:
+      return 'B';
+    case PieceType.queen:
+      return 'Q';
+    case PieceType.king:
+      return 'K';
   }
 }

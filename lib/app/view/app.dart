@@ -21,7 +21,7 @@ class App extends StatelessWidget {
         body: SafeArea(
           child: Container(
             margin: const EdgeInsets.all(16),
-            child: ChessBoard(),
+            child: const ChessBoard(),
           ),
         ),
       ),

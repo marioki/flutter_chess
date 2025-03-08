@@ -3,28 +3,7 @@ import 'package:flutter_chess/chess_board/models/game_state.dart';
 import 'package:flutter_chess/chess_board/models/piece.dart';
 import 'package:flutter_chess/chess_board/models/square.dart';
 
-GameState parseFenString(String fen) {
-  final fenSegments = fen.split(' ');
 
-  final piecesSegment = fenSegments[0];
-  final sideToMoveSegment = fenSegments[1];
-  final castleSegment = fenSegments[2];
-  final enPassantSegment = fenSegments[3];
-  final halfMoveClockSegment = fenSegments[4];
-  final fullMoveClockSegment = fenSegments[5];
-
-  return GameState(
-    pieceMatrix: generatePieceMatrix(piecesSegment),
-    sideToMove: sideToMoveSegment == 'w' ? Side.white : Side.black,
-    whiteQueenSideCasttle: castleSegment.contains('Q'),
-    whiteKingSideCasttle: castleSegment.contains('K'),
-    blackQueenSideCasttle: castleSegment.contains('q'),
-    blackKingSideCasttle: castleSegment.contains('k'),
-    halfMoveClock: int.parse(halfMoveClockSegment),
-    fullMoveNumber: int.parse(fullMoveClockSegment),
-    enPassant: coordinateFromAnSquare(enPassantSegment),
-  );
-}
 
 ///takes in a single square in long algebraic notation and returns a Coordinate Object.
 Coordinate? coordinateFromAnSquare(String an) {
@@ -35,12 +14,6 @@ Coordinate? coordinateFromAnSquare(String an) {
   final file = boardLetters.indexOf(an[0]);
   final rank = int.parse(an[1]) - 1;
   return Coordinate(file: file, rank: rank);
-}
-
-/// Takes in a Coordinate Object and returns the corresponding square name in algebraic notation
-String anSquareFromCoordinate(Coordinate coordinate) {
-  const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-  return '${boardLetters[coordinate.file]}${coordinate.rank}';
 }
 
 List<List<SquareData>> generatePieceMatrix(String piecesSegment) {
@@ -62,7 +35,7 @@ List<List<SquareData>> generatePieceMatrix(String piecesSegment) {
       }
     } else {
       pieceMatrix[rank].add(
-        SquareData(pieceFromFenCharacter(char), coordinate: Coordinate(file: file, rank: rank)),
+        SquareData(createChessPieceFromFen(char), coordinate: Coordinate(file: file, rank: rank)),
       );
       file++;
     }
@@ -70,7 +43,7 @@ List<List<SquareData>> generatePieceMatrix(String piecesSegment) {
   return pieceMatrix;
 }
 
-ChessPiece pieceFromFenCharacter(String char) {
+ChessPiece createChessPieceFromFen(String char) {
   Side color;
   PieceType type;
 

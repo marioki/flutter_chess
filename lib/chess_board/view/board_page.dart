@@ -1,25 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_chess/chess_board/helpers/parse_fen_string.dart';
 import 'package:flutter_chess/chess_board/models/game_state.dart';
 import 'package:flutter_chess/chess_board/widgets/board_square.dart';
 
 class ChessBoard extends StatelessWidget {
   final String fen;
-  late final GameState gameState;
+
   static const _defaultStartingPosition =
-      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1';
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 0';
   static const _boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-  ChessBoard({
-    Key? key,
+  const ChessBoard({
+    super.key,
     this.fen = _defaultStartingPosition,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    gameState = parseFenString(fen);
-    print('Rebuilding Chess Board Widget');
+    final gameState = GameState.fromFEN(fen);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
