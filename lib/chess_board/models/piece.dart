@@ -11,4 +11,21 @@ class ChessPiece {
   });
   final PieceType type;
   final Side color;
+
+  String get pieceCharacter {
+    switch (type) {
+      case PieceType.pawn:
+        return '';
+      case PieceType.rook:
+        return 'R';
+      case PieceType.knight:
+        return 'N';
+      case PieceType.bishop:
+        return 'B';
+      case PieceType.queen:
+        return 'Q';
+      case PieceType.king:
+        return 'K';
+    }
+  }
 }

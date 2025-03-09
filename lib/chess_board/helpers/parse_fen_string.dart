@@ -1,9 +1,6 @@
 import 'package:flutter_chess/chess_board/models/coordinate.dart';
-import 'package:flutter_chess/chess_board/models/game_state.dart';
 import 'package:flutter_chess/chess_board/models/piece.dart';
 import 'package:flutter_chess/chess_board/models/square.dart';
-
-
 
 ///takes in a single square in long algebraic notation and returns a Coordinate Object.
 Coordinate? coordinateFromAnSquare(String an) {

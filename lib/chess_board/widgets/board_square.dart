@@ -1,10 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_chess/chess_board/helpers/parse_fen_string.dart';
 
-import 'package:flutter_chess/chess_board/models/coordinate.dart';
 import 'package:flutter_chess/chess_board/models/lan_move.dart';
-import 'package:flutter_chess/chess_board/models/piece.dart';
 import 'package:flutter_chess/chess_board/models/square.dart';
 import 'package:flutter_chess/chess_board/widgets/piece.dart';
 
@@ -29,7 +26,8 @@ class BoardSquare extends StatelessWidget {
               color: isLight
                   ? const Color.fromRGBO(69, 123, 157, 1)
                   : const Color.fromRGBO(241, 250, 250, 1),
-              child: Text('${squareData.coordinate.displayFile}, ${squareData.coordinate.displayRank}, '),
+              child: Text(
+                  '${squareData.coordinate.displayFile}, ${squareData.coordinate.displayRank}, '),
             ),
             if (squareData.isHighLighted)
               Container(color: Colors.green.withAlpha(100))
@@ -46,8 +44,10 @@ class BoardSquare extends StatelessWidget {
                   final centerOffset = Offset(size.height / 8, size.width / 8);
                   return centerOffset;
                 },
+
                 onDragStarted: () {
-                  print('Drag Started');
+                  //for selected piece events
+                  print(squareData.coordinate.algebraic);
                 },
                 childWhenDragging: Container(), // Empty square while dragging
                 child: SizedBox.expand(
@@ -60,31 +60,18 @@ class BoardSquare extends StatelessWidget {
         );
       },
       onAcceptWithDetails: (pieceDraggable) {
+        if (pieceDraggable.data.coordinate == squareData.coordinate) {
+          return;
+        }
+        //for move events
         final lanMove = LANMove(
-          pieceType: pieceDraggable.data.piece!.type,
+          chessPiece: pieceDraggable.data.piece!,
           origin: pieceDraggable.data.coordinate,
           target: squareData.coordinate,
         );
+
         print(lanMove);
-        // Send lanMove to the engine for further processing
       },
     );
-  }
-}
-
-String pieceCharacterFromType(PieceType pieceType) {
-  switch (pieceType) {
-    case PieceType.pawn:
-      return '';
-    case PieceType.rook:
-      return 'R';
-    case PieceType.knight:
-      return 'N';
-    case PieceType.bishop:
-      return 'B';
-    case PieceType.queen:
-      return 'Q';
-    case PieceType.king:
-      return 'K';
   }
 }
