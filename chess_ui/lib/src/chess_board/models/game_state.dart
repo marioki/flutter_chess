@@ -1,7 +1,7 @@
-import 'package:flutter_chess/chess_board/helpers/parse_fen_string.dart';
-import 'package:flutter_chess/chess_board/models/coordinate.dart';
-import 'package:flutter_chess/chess_board/models/piece.dart';
-import 'package:flutter_chess/chess_board/models/square.dart';
+import '../helpers/parse_fen_string.dart';
+import 'coordinate.dart';
+import 'piece.dart';
+import 'square.dart';
 
 class GameState {
   GameState({

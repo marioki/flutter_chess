@@ -1,6 +1,5 @@
+import 'package:chess_ui/chess_ui.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_chess/chess_board/view/view.dart';
 import 'package:flutter_chess/l10n/l10n.dart';
 
 class App extends StatelessWidget {

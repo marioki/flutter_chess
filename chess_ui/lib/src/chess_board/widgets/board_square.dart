@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:flutter_chess/chess_board/models/lan_move.dart';
-import 'package:flutter_chess/chess_board/models/square.dart';
-import 'package:flutter_chess/chess_board/widgets/piece.dart';
+import '../models/lan_move.dart';
+import '../models/square.dart';
+import 'piece.dart';
 
 class BoardSquare extends StatelessWidget {
   const BoardSquare({

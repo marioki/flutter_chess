@@ -1,5 +1,5 @@
-import 'package:flutter_chess/chess_board/models/coordinate.dart';
-import 'package:flutter_chess/chess_board/models/piece.dart';
+import 'coordinate.dart';
+import 'piece.dart';
 
 class LANMove {
   LANMove({
