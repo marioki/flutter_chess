@@ -5,7 +5,7 @@ import 'package:flutter_chess/chess_board/models/square.dart';
 
 class GameState {
   GameState({
-    required this.pieceMatrix,
+    required this.squareGrid,
     required this.sideToMove,
     required this.whiteQueenSideCasttle,
     required this.whiteKingSideCasttle,
@@ -25,7 +25,7 @@ class GameState {
     final fullMoveClockSegment = fenSegments[5];
 
     return GameState(
-      pieceMatrix: generatePieceMatrix(piecesSegment),
+      squareGrid: createSquareGrid(piecesSegment),
       sideToMove: sideToMoveSegment == 'w' ? Side.white : Side.black,
       whiteQueenSideCasttle: castleSegment.contains('Q'),
       whiteKingSideCasttle: castleSegment.contains('K'),
@@ -36,7 +36,7 @@ class GameState {
       enPassant: coordinateFromAnSquare(enPassantSegment),
     );
   }
-
+  
   Side sideToMove;
   bool whiteQueenSideCasttle;
   bool whiteKingSideCasttle;
@@ -45,5 +45,5 @@ class GameState {
   Coordinate? enPassant;
   int halfMoveClock;
   int fullMoveNumber;
-  List<List<SquareData>> pieceMatrix;
+  List<List<SquareData>> squareGrid;
 }

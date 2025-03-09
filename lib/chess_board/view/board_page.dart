@@ -32,7 +32,7 @@ class ChessBoard extends StatelessWidget {
                 children: List.generate(
                   8,
                   (index) => Text(
-                    (index + 1).toString(),
+                    (8 - index).toString(),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -44,18 +44,7 @@ class ChessBoard extends StatelessWidget {
                 child: Column(
                   children: [
                     //Building the file labels
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: List.generate(
-                        _boardLetters.length,
-                        (index) => Text(
-                          _boardLetters[index],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
+
                     const SizedBox(height: 16),
                     Expanded(
                       child: Container(
@@ -65,18 +54,10 @@ class ChessBoard extends StatelessWidget {
                             return Expanded(
                               child: Column(
                                 children: List.generate(8, (row) {
-                                  final isLightSquare = (row + col).isEven;
-                                  if (col == 0 || col == 7) {
-                                    return Expanded(
-                                      child: BoardSquare(
-                                        squareData: gameState.pieceMatrix[row][col],
-                                        isLight: isLightSquare,
-                                      ),
-                                    );
-                                  }
+                                  final isLightSquare = (row + col).isOdd;
                                   return Expanded(
                                     child: BoardSquare(
-                                      squareData: gameState.pieceMatrix[row][col],
+                                      squareData: gameState.squareGrid[(row - 7).abs()][col],
                                       isLight: isLightSquare,
                                     ),
                                   );
@@ -106,18 +87,6 @@ class ChessBoard extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               //Building the rank labels
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(
-                  8,
-                  (index) => Text(
-                    (index + 1).toString(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

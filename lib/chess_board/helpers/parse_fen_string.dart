@@ -13,16 +13,16 @@ Coordinate? coordinateFromAnSquare(String an) {
   return Coordinate(file: file, rank: rank);
 }
 
-List<List<SquareData>> generatePieceMatrix(String piecesSegment) {
+List<List<SquareData>> createSquareGrid(String piecesSegment) {
   final pieceMatrix = <List<SquareData>>[[], [], [], [], [], [], [], []];
   var file = 0;
-  var rank = 0;
+  var rank = 7;
 
   for (var index = 0; index < piecesSegment.length; index++) {
     final char = piecesSegment[index];
     if (char == '/') {
       file = 0;
-      rank++;
+      rank--;
       continue;
     }
     if (int.tryParse(char) != null) {
