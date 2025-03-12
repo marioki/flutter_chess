@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:chess_ui/src/chess_board/models/coordinate.dart';
-import 'package:chess_ui/src/chess_board/models/game_state.dart';
+import 'package:chess_ui/src/chess_board/models/game.dart';
 import 'package:chess_ui/src/chess_board/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +26,7 @@ class ChessBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     print('fen from board page');
     print(fen);
-    final gameState = GameState.fromFEN(fen);
+    final gameState = Game.fromFEN(fen);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
