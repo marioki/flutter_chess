@@ -1,7 +1,7 @@
-import '../helpers/parse_fen_string.dart';
-import 'coordinate.dart';
-import 'piece.dart';
-import 'square.dart';
+import 'package:chess_ui/src/chess_board/helpers/parse_fen_string.dart';
+import 'package:chess_ui/src/chess_board/models/coordinate.dart';
+import 'package:chess_ui/src/chess_board/models/piece.dart';
+import 'package:chess_ui/src/chess_board/models/square.dart';
 
 class GameState {
   GameState({
@@ -33,10 +33,10 @@ class GameState {
       blackKingSideCasttle: castleSegment.contains('k'),
       halfMoveClock: int.parse(halfMoveClockSegment),
       fullMoveNumber: int.parse(fullMoveClockSegment),
-      enPassant: coordinateFromAnSquare(enPassantSegment),
+      enPassant: Coordinate.fromAlgebraic(enPassantSegment),
     );
   }
-  
+
   Side sideToMove;
   bool whiteQueenSideCasttle;
   bool whiteKingSideCasttle;

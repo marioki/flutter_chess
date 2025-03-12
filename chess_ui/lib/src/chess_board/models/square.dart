@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'coordinate.dart';
-import 'piece.dart';
+import 'package:chess_ui/src/chess_board/models/coordinate.dart';
+import 'package:chess_ui/src/chess_board/models/piece.dart';
 
 class SquareData {
   SquareData(

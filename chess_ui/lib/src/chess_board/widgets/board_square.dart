@@ -10,11 +10,12 @@ class BoardSquare extends StatelessWidget {
     required this.isLight,
     required this.onMove,
     required this.onSelectPiece,
+    this.isHighLighted = false,
     super.key,
   });
   final SquareData squareData;
   final bool isLight;
-
+  final bool isHighLighted;
   final void Function(String) onMove;
   final void Function(String) onSelectPiece;
 
@@ -30,10 +31,14 @@ class BoardSquare extends StatelessWidget {
               color: isLight
                   ? const Color.fromRGBO(69, 123, 157, 1)
                   : const Color.fromRGBO(241, 250, 250, 1),
-              child: Text(
-                  '${squareData.coordinate.displayFile}, ${squareData.coordinate.displayRank}, '),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  squareData.coordinate.algebraic,
+                ),
+              ),
             ),
-            if (squareData.isHighLighted)
+            if (isHighLighted)
               Container(color: Colors.green.withAlpha(100))
             else
               Container(),

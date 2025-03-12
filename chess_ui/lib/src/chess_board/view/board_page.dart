@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:chess_ui/src/chess_board/models/coordinate.dart';
 import 'package:chess_ui/src/chess_board/models/game_state.dart';
 import 'package:chess_ui/src/chess_board/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,11 @@ class ChessBoard extends StatelessWidget {
   final String fen;
   final void Function(String) onMove;
   final void Function(String) onSelectPiece;
+  final List<String> possibleMoves;
   const ChessBoard({
     required this.onMove,
     required this.onSelectPiece,
+    required this.possibleMoves,
     super.key,
     this.fen = _defaultStartingPosition,
   });
@@ -67,6 +70,10 @@ class ChessBoard extends StatelessWidget {
                                       isLight: isLightSquare,
                                       onMove: onMove,
                                       onSelectPiece: onSelectPiece,
+                                      isHighLighted: possibleMoves.contains(
+                                        gameState
+                                            .squareGrid[(row - 7).abs()][col].coordinate.algebraic,
+                                      ),
                                     ),
                                   );
                                 }),

@@ -28,6 +28,7 @@ class App extends StatelessWidget {
                 builder: (context, state) {
                   return ChessBoard(
                     fen: state.fen,
+                    possibleMoves: state.possibleMoves,
                     onMove: (lanMove) {
                       BlocProvider.of<GameBloc>(context).add(ChessPieceMoved(lanMove));
                     },
