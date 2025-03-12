@@ -1,22 +1,28 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:chess_ui/src/chess_board/models/game_state.dart';
 import 'package:chess_ui/src/chess_board/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ChessBoard extends StatelessWidget {
-  final String fen;
-
   static const _defaultStartingPosition =
       'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 0';
   static const _boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
+  final String fen;
+  final void Function(String) onMove;
+  final void Function(String) onSelectPiece;
   const ChessBoard({
+    required this.onMove,
+    required this.onSelectPiece,
     super.key,
     this.fen = _defaultStartingPosition,
   });
 
   @override
   Widget build(BuildContext context) {
+    print('fen from board page');
+    print(fen);
     final gameState = GameState.fromFEN(fen);
 
     return Row(
@@ -59,6 +65,8 @@ class ChessBoard extends StatelessWidget {
                                     child: BoardSquare(
                                       squareData: gameState.squareGrid[(row - 7).abs()][col],
                                       isLight: isLightSquare,
+                                      onMove: onMove,
+                                      onSelectPiece: onSelectPiece,
                                     ),
                                   );
                                 }),

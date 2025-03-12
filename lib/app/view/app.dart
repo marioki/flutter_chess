@@ -1,5 +1,7 @@
 import 'package:chess_ui/chess_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chess/app/bloc/game_bloc.dart';
 import 'package:flutter_chess/l10n/l10n.dart';
 
 class App extends StatelessWidget {
@@ -18,9 +20,24 @@ class App extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         body: SafeArea(
-          child: Container(
-            margin: const EdgeInsets.all(16),
-            child: const ChessBoard(),
+          child: BlocProvider(
+            create: (context) => GameBloc(),
+            child: Container(
+              margin: const EdgeInsets.all(16),
+              child: BlocBuilder<GameBloc, GameState>(
+                builder: (context, state) {
+                  return ChessBoard(
+                    fen: state.fen,
+                    onMove: (lanMove) {
+                      BlocProvider.of<GameBloc>(context).add(ChessPieceMoved(lanMove));
+                    },
+                    onSelectPiece: (anSquare) {
+                      BlocProvider.of<GameBloc>(context).add(ChessPieceSelected(anSquare));
+                    },
+                  );
+                },
+              ),
+            ),
           ),
         ),
       ),

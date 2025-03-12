@@ -1,17 +1,48 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+/// Represents the side (color) of a chess piece.
+enum Side {
+  /// The white side.
+  white,
 
-enum Side { white, black }
+  /// The black side.
+  black
+}
 
-enum PieceType { pawn, rook, knight, bishop, queen, king }
+/// Represents the type of a chess piece.
+enum PieceType {
+  /// The pawn piece.
+  pawn,
 
+  /// The rook piece.
+  rook,
+
+  /// The knight piece.
+  knight,
+
+  /// The bishop piece.
+  bishop,
+
+  /// The queen piece.
+  queen,
+
+  /// The king piece.
+  king
+}
+
+/// Represents a chess piece on the board.
 class ChessPiece {
+  /// Creates a [ChessPiece] with the given [type] and [color].
   ChessPiece({
     required this.type,
     required this.color,
   });
+
+  /// The type of the chess piece (e.g., pawn, rook, knight).
   final PieceType type;
+
+  /// The color of the chess piece (e.g., white, black).
   final Side color;
 
+  /// Returns the character representation of the chess piece.
   String get pieceCharacter {
     switch (type) {
       case PieceType.pawn:

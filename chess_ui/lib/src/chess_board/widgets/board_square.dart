@@ -1,18 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:chess_ui/src/chess_board/models/move.dart';
+import 'package:chess_ui/src/chess_board/models/square.dart';
+import 'package:chess_ui/src/chess_board/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-
-import '../models/lan_move.dart';
-import '../models/square.dart';
-import 'piece.dart';
 
 class BoardSquare extends StatelessWidget {
   const BoardSquare({
     required this.squareData,
     required this.isLight,
+    required this.onMove,
+    required this.onSelectPiece,
     super.key,
   });
   final SquareData squareData;
   final bool isLight;
+
+  final void Function(String) onMove;
+  final void Function(String) onSelectPiece;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,7 @@ class BoardSquare extends StatelessWidget {
 
                 onDragStarted: () {
                   //for selected piece events
-                  print(squareData.coordinate.algebraic);
+                  onSelectPiece(squareData.coordinate.algebraic);
                 },
                 childWhenDragging: Container(), // Empty square while dragging
                 child: SizedBox.expand(
@@ -64,13 +68,12 @@ class BoardSquare extends StatelessWidget {
           return;
         }
         //for move events
-        final lanMove = LANMove(
+        final lanMove = Move(
           chessPiece: pieceDraggable.data.piece!,
           origin: pieceDraggable.data.coordinate,
           target: squareData.coordinate,
         );
-
-        print(lanMove);
+        onMove(lanMove.toString());
       },
     );
   }
