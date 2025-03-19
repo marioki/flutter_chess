@@ -1,5 +1,5 @@
-import 'coordinate.dart';
-import 'piece.dart';
+import 'package:chess_shared/src/models/coordinate.dart';
+import 'package:chess_shared/src/models/piece.dart';
 
 /// Represents a chess move in Long Algebraic Notation (LAN).
 class Move {

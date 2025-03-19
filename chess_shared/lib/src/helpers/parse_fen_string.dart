@@ -1,17 +1,17 @@
-import '../models/coordinate.dart';
-import '../models/piece.dart';
-import '../models/square.dart';
+import 'package:chess_shared/src/models/coordinate.dart';
+import 'package:chess_shared/src/models/piece.dart';
+import 'package:chess_shared/src/models/square.dart';
 
 /// Creates a grid of [SquareData] objects from the pieces segment of a FEN string.
 ///
-/// [piecesSegment] The pieces segment of a FEN string.
-List<List<SquareData>> createSquareGrid(String piecesSegment) {
+/// [fenPiecesSegment] The pieces segment of a FEN string.
+List<List<SquareData>> createSquareGrid(String fenPiecesSegment) {
   final pieceMatrix = <List<SquareData>>[[], [], [], [], [], [], [], []];
   var file = 0;
   var rank = 7;
 
-  for (var index = 0; index < piecesSegment.length; index++) {
-    final char = piecesSegment[index];
+  for (var index = 0; index < fenPiecesSegment.length; index++) {
+    final char = fenPiecesSegment[index];
     if (char == '/') {
       file = 0;
       rank--;
@@ -19,12 +19,20 @@ List<List<SquareData>> createSquareGrid(String piecesSegment) {
     }
     if (int.tryParse(char) != null) {
       for (var num = int.parse(char); num > 0; num--) {
-        pieceMatrix[rank].add(SquareData(null, coordinate: Coordinate(file: file, rank: rank)));
+        pieceMatrix[rank].add(
+          SquareData(
+            null,
+            coordinate: Coordinate(file: file, rank: rank),
+          ),
+        );
         file++;
       }
     } else {
       pieceMatrix[rank].add(
-        SquareData(createChessPieceFromFen(char), coordinate: Coordinate(file: file, rank: rank)),
+        SquareData(
+          createChessPieceFromFen(char),
+          coordinate: Coordinate(file: file, rank: rank),
+        ),
       );
       file++;
     }
@@ -43,51 +51,39 @@ ChessPiece createChessPieceFromFen(String char) {
     case 'p':
       color = Side.black;
       type = PieceType.pawn;
-      break;
     case 'r':
       color = Side.black;
       type = PieceType.rook;
-      break;
     case 'n':
       color = Side.black;
       type = PieceType.knight;
-      break;
     case 'b':
       color = Side.black;
       type = PieceType.bishop;
-      break;
     case 'q':
       color = Side.black;
       type = PieceType.queen;
-      break;
     case 'k':
       color = Side.black;
       type = PieceType.king;
-      break;
     case 'P':
       color = Side.white;
       type = PieceType.pawn;
-      break;
     case 'R':
       color = Side.white;
       type = PieceType.rook;
-      break;
     case 'N':
       color = Side.white;
       type = PieceType.knight;
-      break;
     case 'B':
       color = Side.white;
       type = PieceType.bishop;
-      break;
     case 'Q':
       color = Side.white;
       type = PieceType.queen;
-      break;
     case 'K':
       color = Side.white;
       type = PieceType.king;
-      break;
     default:
       color = Side.black;
       type = PieceType.pawn;
