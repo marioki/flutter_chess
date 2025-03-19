@@ -1,5 +1,5 @@
-import 'package:chess_ui/src/chess_board/models/coordinate.dart';
-import 'package:chess_ui/src/chess_board/models/piece.dart';
+import 'coordinate.dart';
+import 'piece.dart';
 
 /// Represents a chess move in Long Algebraic Notation (LAN).
 class Move {

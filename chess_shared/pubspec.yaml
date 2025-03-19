@@ -1,5 +1,5 @@
-name: chess_ui
-description: ui package for a chess board and pieces
+name: chess_shared
+description: a collection of classes and functions to support chess_ui and core_chess packages.
 version: 0.1.0+1
 publish_to: none
 
@@ -8,14 +8,11 @@ environment:
   flutter: ^3.24.0
 
 dependencies:
-  chess_shared:
-    path: ../chess_shared
-  equatable: ^2.0.7
   flutter:
     sdk: flutter
- 
 
 dev_dependencies:
+  equatable: ^2.0.7
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4

@@ -1,5 +1,5 @@
+import 'package:chess_shared/chess_shared.dart';
 import 'package:flutter/material.dart';
-import '../models/piece.dart';
 
 class PieceWidget extends StatelessWidget {
   const PieceWidget({required this.piece, super.key});

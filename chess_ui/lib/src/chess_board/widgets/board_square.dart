@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:chess_ui/src/chess_board/models/move.dart';
-import 'package:chess_ui/src/chess_board/models/square.dart';
+import 'package:chess_shared/chess_shared.dart';
 import 'package:chess_ui/src/chess_board/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -38,10 +37,7 @@ class BoardSquare extends StatelessWidget {
                 ),
               ),
             ),
-            if (isHighLighted)
-              Container(color: Colors.green.withAlpha(100))
-            else
-              Container(),
+            if (isHighLighted) Container(color: Colors.green.withAlpha(100)) else Container(),
             if (squareData.piece != null)
               Draggable<SquareData>(
                 data: squareData,

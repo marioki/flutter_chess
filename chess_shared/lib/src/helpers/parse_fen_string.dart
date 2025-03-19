@@ -1,6 +1,6 @@
-import 'package:chess_ui/src/chess_board/models/coordinate.dart';
-import 'package:chess_ui/src/chess_board/models/piece.dart';
-import 'package:chess_ui/src/chess_board/models/square.dart';
+import '../models/coordinate.dart';
+import '../models/piece.dart';
+import '../models/square.dart';
 
 /// Creates a grid of [SquareData] objects from the pieces segment of a FEN string.
 ///

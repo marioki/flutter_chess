@@ -1,12 +1,13 @@
-import 'package:chess_ui/src/chess_board/helpers/parse_fen_string.dart';
-import 'package:chess_ui/src/chess_board/models/coordinate.dart';
-import 'package:chess_ui/src/chess_board/models/piece.dart';
-import 'package:chess_ui/src/chess_board/models/square.dart';
+import 'package:chess_shared/src/helpers/parse_fen_string.dart';
+
+import 'package:chess_shared/src/models/coordinate.dart';
+import 'package:chess_shared/src/models/piece.dart';
+import 'package:chess_shared/src/models/square.dart';
 
 /// Represents the state of a chess game.
-class Game {
-  /// Creates a [Game] with the given parameters.
-  Game({
+class GamePosition {
+  /// Creates a [GamePosition] with the given parameters.
+  GamePosition({
     required this.squareGrid,
     required this.sideToMove,
     required this.whiteQueenSideCasttle,
@@ -18,10 +19,10 @@ class Game {
     this.enPassant,
   });
 
-  /// Creates a [Game] from a FEN string.
+  /// Creates a [GamePosition] from a FEN string.
   ///
   /// [fen] The FEN string representing the game state.
-  factory Game.fromFEN(String fen) {
+  factory GamePosition.fromFEN(String fen) {
     final fenSegments = fen.split(' ');
     final piecesSegment = fenSegments[0];
     final sideToMoveSegment = fenSegments[1];
@@ -30,7 +31,7 @@ class Game {
     final halfMoveClockSegment = fenSegments[4];
     final fullMoveClockSegment = fenSegments[5];
 
-    return Game(
+    return GamePosition(
       squareGrid: createSquareGrid(piecesSegment),
       sideToMove: sideToMoveSegment == 'w' ? Side.white : Side.black,
       whiteQueenSideCasttle: castleSegment.contains('Q'),
