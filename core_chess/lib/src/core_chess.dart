@@ -26,6 +26,7 @@ class CoreChess {
   List<String> getPossibleMovesForPiece(String fen, String anSquare) {
     final gamePosition = GamePosition.fromFEN(fen);
     final coordinate = Coordinate.fromAlgebraic(anSquare);
+
     return generatePossibleMoves(gamePosition, coordinate!);
   }
 }
@@ -43,9 +44,7 @@ String fenFromGamePosition(GamePosition gamePosition) {
 ///
 /// [GamePosition] The current board state.
 /// [move] The move to validate.
-bool isValidMove(GamePosition GamePosition, Move move) {
-  // Implementation to validate the move
-  // ...
+bool isValidMove(GamePosition gamePosition, Move move) {
   return true;
 }
 
@@ -53,19 +52,17 @@ bool isValidMove(GamePosition GamePosition, Move move) {
 ///
 /// [GamePosition] The current board state.
 /// [move] The move to apply.
-GamePosition applyMove(GamePosition GamePosition, Move move) {
+GamePosition applyMove(GamePosition gamePosition, Move move) {
   // Implementation to apply the move and return the new board state
   // ...
-  return GamePosition;
+  return gamePosition;
 }
 
 /// Generates a list of possible moves for a piece at the given coordinate.
 ///
 /// [GamePosition] The current board state.
 /// [coordinate] The coordinate of the selected piece.
-List<String> generatePossibleMoves(GamePosition GamePosition, Coordinate coordinate) {
-  // Implementation to generate possible moves
-  // ...
+List<String> generatePossibleMoves(GamePosition gamePosition, Coordinate coordinate) {
   return [];
 }
 
@@ -80,10 +77,9 @@ class Move {
 
 /// Represents a coordinate on the chess board.
 class Coordinate {
+  Coordinate({required this.file, required this.rank});
   final int file;
   final int rank;
-
-  Coordinate({required this.file, required this.rank});
 
   /// Converts an algebraic notation square (e.g., 'e4') to a [Coordinate].
   ///
@@ -107,16 +103,12 @@ class Coordinate {
   }
 }
 
-enum PieceType { pawn, knight, bishop, rook, queen, king }
-
-enum PieceColor { white, black }
-
 class Piece {
   Piece({
     required this.type,
-    required this.color,
+    required this.side,
   });
 
   PieceType type;
-  PieceColor color;
+  Side side;
 }
