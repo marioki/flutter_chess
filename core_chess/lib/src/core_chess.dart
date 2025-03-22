@@ -9,25 +9,42 @@ class CoreChess {
   /// [fen] The current FEN string.
   /// [lanMove] The move in Long Algebraic Notation (LAN).
   /// Throws an exception if the move is not valid.
-  String makeMove(String fen, String lanMove) {
-    final gamePosition = GamePosition.fromFEN(fen);
-    final move = Move.fromLan(lanMove);
-    if (!isValidMove(gamePosition, move)) {
-      throw Exception('Invalid move');
-    }
-    final newGamePosition = applyMove(gamePosition, move);
-    return fenFromGamePosition(newGamePosition);
-  }
+  // String makeMove(String fen, String lanMove) {
+  //   final gamePosition = GamePosition.fromFEN(fen);
+  //   final move = Move.fromLan(lanMove);
+  //   if (!isValidMove(gamePosition, move)) {
+  //     throw Exception('Invalid move');
+  //   }
+  //   final newGamePosition = applyMove(gamePosition, move);
+  //   return fenFromGamePosition(newGamePosition);
+  // }
 
   /// Returns a list of possible moves for a piece at the given AN square.
   ///
   /// [fen] The current FEN string.
   /// [anSquare] The algebraic notation square of the selected piece.
-  List<String> getPossibleMovesForPiece(String fen, String anSquare) {
+  List<String> getLegalMoves(String fen, String anSquare) {
     final gamePosition = GamePosition.fromFEN(fen);
     final coordinate = Coordinate.fromAlgebraic(anSquare);
+    final squareData = gamePosition.squareGrid[coordinate.file][coordinate.rank];
+    final moves = <Move>[];
 
-    return generatePossibleMoves(gamePosition, coordinate!);
+    if (squareData.piece == null) {
+      return [];
+    }
+
+    squareData.piece!.getPotientialTargetCoordinate(gamePosition, coordinate).forEach(
+      (element) {
+        moves.add(
+          Move.fromCoordinates(
+            chessPiece: squareData.piece!,
+            origin: coordinate,
+            target: element,
+          ),
+        );
+      },
+    );
+    return moves.map((move) => move.lan).toList();
   }
 }
 
@@ -63,52 +80,10 @@ GamePosition applyMove(GamePosition gamePosition, Move move) {
 /// [GamePosition] The current board state.
 /// [coordinate] The coordinate of the selected piece.
 List<String> generatePossibleMoves(GamePosition gamePosition, Coordinate coordinate) {
+  final possibleMoves = <Coordinate>[];
+  final squareData = gamePosition.squareGrid[coordinate.file][coordinate.rank];
+
+  squareData.piece?.getPotientialTargetCoordinate(gamePosition, coordinate);
+
   return [];
-}
-
-/// Represents a move in Long Algebraic Notation (LAN).
-class Move {
-  /// Creates a [Move] from a String LAN notation.
-  Move.fromLan(String lan) {
-    // Implementation to parse LAN notation and create Move
-    // ...
-  }
-}
-
-/// Represents a coordinate on the chess board.
-class Coordinate {
-  Coordinate({required this.file, required this.rank});
-  final int file;
-  final int rank;
-
-  /// Converts an algebraic notation square (e.g., 'e4') to a [Coordinate].
-  ///
-  /// Returns `null` if the input is '-'.
-  ///
-  /// [an] The algebraic notation square.
-  static Coordinate? fromAlgebraic(String an) {
-    if (an == '-') {
-      return null;
-    }
-    const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    final file = boardLetters.indexOf(an[0]);
-    final rank = int.parse(an[1]) - 1;
-    return Coordinate(file: file, rank: rank);
-  }
-
-  /// Returns the algebraic notation of the coordinate.
-  String get algebraic {
-    const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    return '${boardLetters[file]}${rank + 1}';
-  }
-}
-
-class Piece {
-  Piece({
-    required this.type,
-    required this.side,
-  });
-
-  PieceType type;
-  Side side;
 }

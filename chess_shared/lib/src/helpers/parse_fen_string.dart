@@ -1,5 +1,7 @@
 import 'package:chess_shared/src/models/coordinate.dart';
+import 'package:chess_shared/src/models/pieces/pawn.dart';
 import 'package:chess_shared/src/models/piece.dart';
+import 'package:chess_shared/src/models/pieces/pieces.dart';
 import 'package:chess_shared/src/models/square.dart';
 
 /// Creates a grid of [SquareData] objects from the pieces segment of a FEN string.
@@ -43,51 +45,34 @@ List<List<SquareData>> createSquareGrid(String fenPiecesSegment) {
 /// Creates a [ChessPiece] object from a FEN character.
 ///
 /// [char] The FEN character representing a chess piece.
+/// Throws an [ArgumentError] if the character is not a valid FEN piece.
 ChessPiece createChessPieceFromFen(String char) {
-  Side color;
-  PieceType type;
-
   switch (char) {
     case 'p':
-      color = Side.black;
-      type = PieceType.pawn;
+      return Pawn(side: Side.black);
     case 'r':
-      color = Side.black;
-      type = PieceType.rook;
+      return Rook(side: Side.black);
     case 'n':
-      color = Side.black;
-      type = PieceType.knight;
+      return Knight(side: Side.black);
     case 'b':
-      color = Side.black;
-      type = PieceType.bishop;
+      return Bishop(side: Side.black);
     case 'q':
-      color = Side.black;
-      type = PieceType.queen;
+      return Queen(side: Side.black);
     case 'k':
-      color = Side.black;
-      type = PieceType.king;
+      return King(side: Side.black);
     case 'P':
-      color = Side.white;
-      type = PieceType.pawn;
+      return Pawn(side: Side.white);
     case 'R':
-      color = Side.white;
-      type = PieceType.rook;
+      return Rook(side: Side.white);
     case 'N':
-      color = Side.white;
-      type = PieceType.knight;
+      return Knight(side: Side.white);
     case 'B':
-      color = Side.white;
-      type = PieceType.bishop;
+      return Bishop(side: Side.white);
     case 'Q':
-      color = Side.white;
-      type = PieceType.queen;
+      return Queen(side: Side.white);
     case 'K':
-      color = Side.white;
-      type = PieceType.king;
+      return King(side: Side.white);
     default:
-      color = Side.black;
-      type = PieceType.pawn;
+      throw ArgumentError('Invalid FEN character: $char');
   }
-
-  return ChessPiece(color: color, type: type);
 }

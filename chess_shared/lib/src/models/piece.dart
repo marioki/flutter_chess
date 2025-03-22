@@ -1,3 +1,5 @@
+import 'package:chess_shared/chess_shared.dart';
+
 /// Represents the side (color) of a chess piece.
 enum Side {
   /// The white side.
@@ -29,34 +31,24 @@ enum PieceType {
 }
 
 /// Represents a chess piece on the board.
-class ChessPiece {
-  /// Creates a [ChessPiece] with the given [type] and [color].
+abstract class ChessPiece {
+  /// Creates a [ChessPiece] with the given [side].
+  ///
+  /// [side] determines whether the chess piece belongs to the white or black side.
+
   ChessPiece({
-    required this.type,
-    required this.color,
+    required this.side,
   });
 
-  /// The type of the chess piece (e.g., pawn, rook, knight).
-  final PieceType type;
-
   /// The color of the chess piece (e.g., white, black).
-  final Side color;
+  final Side side;
 
-  /// Returns the character representation of the chess piece.
-  String get pieceCharacter {
-    switch (type) {
-      case PieceType.pawn:
-        return '';
-      case PieceType.rook:
-        return 'R';
-      case PieceType.knight:
-        return 'N';
-      case PieceType.bishop:
-        return 'B';
-      case PieceType.queen:
-        return 'Q';
-      case PieceType.king:
-        return 'K';
-    }
-  }
+  /// Calculates all potential moves for the chess piece from the given [originCoordinate].
+  List<Coordinate> getPotientialTargetCoordinate(
+    GamePosition gamePosition,
+    Coordinate originCoordinate,
+  );
+
+  /// Returns a single-character representation of the chess piece.
+  String getSingleCharRepresentation();
 }

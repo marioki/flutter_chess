@@ -8,7 +8,7 @@ class PieceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/pieces/${piece.color.name}_${piece.type.name}.png',
+      'assets/pieces/${piece.side.name}_${piece.runtimeType}.png',
     );
   }
 }
