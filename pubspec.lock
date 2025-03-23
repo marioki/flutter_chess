@@ -103,6 +103,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  core_chess:
+    dependency: "direct main"
+    description:
+      path: core_chess
+      relative: true
+    source: path
+    version: "0.1.0+1"
   coverage:
     dependency: transitive
     description:

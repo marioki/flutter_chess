@@ -4,61 +4,68 @@ class Pawn extends ChessPiece {
   Pawn({required super.side});
 
   @override
-  List<Coordinate> getPotientialTargetCoordinate(GamePosition gamePosition, Coordinate originCoordinate) {
+  List<Coordinate> getPotientialTargetCoordinate(
+      GamePosition gamePosition, Coordinate originCoordinate) {
     {
-      final posibleMoves = <Coordinate>[];
-      final isFirstMove = originCoordinate.rank == 6;
-      final board = gamePosition.squareGrid;
-
-      // For White Pawns
       if (side == Side.white && originCoordinate.rank < 1) {
         return [];
       }
-      // For Black Pawns
       if (side == Side.black && originCoordinate.rank > 6) {
         return [];
       }
 
+      final posibleMoves = <Coordinate>[];
+      final bool isFirstMove;
+      final board = gamePosition.squareGrid;
+      final int direction;
       SquareData? ahead;
       SquareData? ahead2Steps;
-      SquareData? diagonalLeft;
-      SquareData? diagonalRight;
+      SquareData? diagonalWest;
+      SquareData? diagonalEast;
+
+      if (side == Side.white) {
+        isFirstMove = originCoordinate.rank == 1;
+        direction = 1;
+      } else {
+        isFirstMove = originCoordinate.rank == 6;
+        direction = -1;
+      }
 
       //Check ahead
       if (originCoordinate.rank > 0) {
-        ahead = board[originCoordinate.rank - 1][originCoordinate.file];
+        ahead = board[originCoordinate.rank + direction][originCoordinate.file];
       }
 
       //Check ahead two steps
       if (isFirstMove) {
-        ahead2Steps = board[originCoordinate.rank - 2][originCoordinate.file];
+        ahead2Steps = board[originCoordinate.rank + (direction * 2)][originCoordinate.file];
       }
 
-      //Check diagonalLeft
+      //Check diagonalWest
       if (originCoordinate.file > 0) {
-        diagonalLeft = board[originCoordinate.rank - 1][originCoordinate.file - 1];
+        diagonalWest = board[originCoordinate.rank + direction][originCoordinate.file - 1];
+
+        if (diagonalWest.piece?.side != null && diagonalWest.piece?.side != side) {
+          posibleMoves.add(
+            Coordinate(
+              file: diagonalWest.coordinate.file,
+              rank: diagonalWest.coordinate.rank,
+            ),
+          );
+        }
       }
-      //Check diagonalRight
+      //Check diagonalEast
       if (originCoordinate.file < 7) {
-        diagonalRight = board[originCoordinate.rank - 1][originCoordinate.file + 1];
-      }
+        diagonalEast = board[originCoordinate.rank + direction][originCoordinate.file + 1];
 
-      if (diagonalLeft?.piece?.side != side) {
-        posibleMoves.add(
-          Coordinate(
-            file: diagonalLeft!.coordinate.file,
-            rank: diagonalLeft.coordinate.rank,
-          ),
-        );
-      }
-
-      if (diagonalRight?.piece?.side != side) {
-        posibleMoves.add(
-          Coordinate(
-            file: diagonalRight!.coordinate.file,
-            rank: diagonalRight.coordinate.rank,
-          ),
-        );
+        if (diagonalEast.piece?.side != null && diagonalEast.piece?.side != side) {
+          posibleMoves.add(
+            Coordinate(
+              file: diagonalEast.coordinate.file,
+              rank: diagonalEast.coordinate.rank,
+            ),
+          );
+        }
       }
 
       if (ahead?.piece == null) {

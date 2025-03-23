@@ -10,6 +10,8 @@ dependencies:
   bloc: ^9.0.0
   chess_ui:
     path: chess_ui
+  core_chess:
+    path: core_chess
   equatable: ^2.0.7
   flutter:
     sdk: flutter

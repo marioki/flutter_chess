@@ -33,7 +33,7 @@ class BoardSquare extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Text(
-                  squareData.coordinate.algebraic,
+                  '${squareData.coordinate.algebraic}\n${squareData.coordinate.file},${squareData.coordinate.rank}',
                 ),
               ),
             ),

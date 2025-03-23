@@ -40,7 +40,7 @@ class GamePosition {
       blackKingSideCasttle: castleSegment.contains('k'),
       halfMoveClock: int.parse(halfMoveClockSegment),
       fullMoveNumber: int.parse(fullMoveClockSegment),
-      enPassant: Coordinate.fromAlgebraic(enPassantSegment),
+      enPassant: enPassantSegment == '-' ? null : Coordinate.fromAlgebraic(enPassantSegment),
     );
   }
 

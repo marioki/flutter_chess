@@ -33,6 +33,7 @@ class App extends StatelessWidget {
                       BlocProvider.of<GameBloc>(context).add(ChessPieceMoved(lanMove));
                     },
                     onSelectPiece: (anSquare) {
+                      print('*UI* Selected Piece Square: $anSquare');
                       BlocProvider.of<GameBloc>(context).add(ChessPieceSelected(anSquare));
                     },
                   );

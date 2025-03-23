@@ -1,5 +1,4 @@
 import 'package:chess_shared/src/models/coordinate.dart';
-import 'package:chess_shared/src/models/pieces/pawn.dart';
 import 'package:chess_shared/src/models/piece.dart';
 import 'package:chess_shared/src/models/pieces/pieces.dart';
 import 'package:chess_shared/src/models/square.dart';

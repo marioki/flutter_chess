@@ -21,9 +21,6 @@ class Coordinate extends Equatable {
   /// [an] The algebraic notation square to convert.
   /// Throws a [FormatException] if the input is not valid algebraic notation.
   static Coordinate fromAlgebraic(String an) {
-    if (an == '-') {
-      throw ArgumentError('Invalid algebraic notation $an');
-    }
     const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
     final file = boardLetters.indexOf(an[0]);
     final rank = int.parse(an[1]) - 1;

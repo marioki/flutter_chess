@@ -26,25 +26,38 @@ class CoreChess {
   List<String> getLegalMoves(String fen, String anSquare) {
     final gamePosition = GamePosition.fromFEN(fen);
     final coordinate = Coordinate.fromAlgebraic(anSquare);
-    final squareData = gamePosition.squareGrid[coordinate.file][coordinate.rank];
+    print('*CoreChess* Selected Coordinate: ${coordinate.algebraic}');
+    print('*CoreChess* Piece Coordinate: ${coordinate.rank}, ${coordinate.file}');
+    final squareData = gamePosition.squareGrid[coordinate.rank][coordinate.file];
+    print('*CoreChess* Piece: ${squareData.piece}');
+    print('*CoreChess* Piece Type: ${squareData.piece?.side}');
     final moves = <Move>[];
 
     if (squareData.piece == null) {
       return [];
     }
 
-    squareData.piece!.getPotientialTargetCoordinate(gamePosition, coordinate).forEach(
-      (element) {
-        moves.add(
-          Move.fromCoordinates(
-            chessPiece: squareData.piece!,
-            origin: coordinate,
-            target: element,
-          ),
-        );
+    final myList = squareData.piece!.getPotientialTargetCoordinate(gamePosition, coordinate);
+    final strings = myList.map(
+      (e) {
+        return e.algebraic;
       },
-    );
-    return moves.map((move) => move.lan).toList();
+    ).toList();
+
+    // If we want to send moves and not just Algebraic Notation squares
+    // squareData.piece!.getPotientialTargetCoordinate(gamePosition, coordinate).forEach(
+    //   (element) {
+    //     moves.add(
+    //       Move.fromCoordinates(
+    //         chessPiece: squareData.piece!,
+    //         origin: coordinate,
+    //         target: element,
+    //       ),
+    //     );
+    //   },
+    // );
+
+    return strings;
   }
 }
 
