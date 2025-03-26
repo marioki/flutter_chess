@@ -75,3 +75,49 @@ ChessPiece createChessPieceFromFen(String char) {
       throw ArgumentError('Invalid FEN character: $char');
   }
 }
+
+/// Converts a [ChessPiece] object to its corresponding FEN character.
+///
+/// [piece] The [ChessPiece] object to convert.
+/// Returns the FEN character representing the chess piece.
+/// Throws an [ArgumentError] if the piece is not valid.
+String chessPieceToFen(ChessPiece piece) {
+  if (piece is Pawn) {
+    return piece.side == Side.white ? 'P' : 'p';
+  } else if (piece is Rook) {
+    return piece.side == Side.white ? 'R' : 'r';
+  } else if (piece is Knight) {
+    return piece.side == Side.white ? 'N' : 'n';
+  } else if (piece is Bishop) {
+    return piece.side == Side.white ? 'B' : 'b';
+  } else if (piece is Queen) {
+    return piece.side == Side.white ? 'Q' : 'q';
+  } else if (piece is King) {
+    return piece.side == Side.white ? 'K' : 'k';
+  } else {
+    throw ArgumentError('Invalid ChessPiece: $piece');
+  }
+}
+
+/// Creates a [ChessPiece] object from a Long Algebraic Notation (LAN) move character.
+///
+/// [char] The character representing a chess piece in a LAN move.
+/// Throws an [ArgumentError] if the character is not a valid LAN piece.
+ChessPiece chessPieceFromLanMove(String char) {
+  switch (char) {
+    case '':
+      return Pawn();
+    case 'R':
+      return Rook();
+    case 'N':
+      return Knight();
+    case 'B':
+      return Bishop();
+    case 'Q':
+      return Queen();
+    case 'K':
+      return King();
+    default:
+      throw ArgumentError('Invalid FEN character: $char');
+  }
+}

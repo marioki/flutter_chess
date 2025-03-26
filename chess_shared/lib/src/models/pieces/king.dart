@@ -8,7 +8,7 @@ class King extends ChessPiece {
   /// Creates a [King] chess piece with the given [side].
   ///
   /// [side] determines whether the King belongs to the white or black side.
-  King({required super.side});
+  King({ super.side});
 
   /// Calculates all potential moves for the King from the given [originCoordinate].
   ///
@@ -96,7 +96,7 @@ class King extends ChessPiece {
   }
   
   @override
-  String getSingleCharRepresentation() {
+  String getSingleCharRepresentation({bool? explicit}) {
     return 'K';
   }
 }

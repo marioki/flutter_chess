@@ -1,7 +1,7 @@
 import 'package:chess_shared/chess_shared.dart';
 
 class Pawn extends ChessPiece {
-  Pawn({required super.side});
+  Pawn({super.side});
 
   @override
   List<Coordinate> getPotientialTargetCoordinate(
@@ -91,7 +91,7 @@ class Pawn extends ChessPiece {
   }
 
   @override
-  String getSingleCharRepresentation() {
-    return '';
+  String getSingleCharRepresentation({bool? explicit}) {
+    return explicit == true ? 'P' : '';
   }
 }

@@ -9,7 +9,7 @@ class Queen extends ChessPiece {
   /// Creates a [Queen] chess piece with the given [side].
   ///
   /// [side] determines whether the Queen belongs to the white or black side.
-  Queen({required super.side});
+  Queen({ super.side});
 
   /// Calculates all potential moves for the Queen from the given [originCoordinate].
   ///
@@ -191,7 +191,7 @@ class Queen extends ChessPiece {
   }
 
   @override
-  String getSingleCharRepresentation() {
+  String getSingleCharRepresentation({bool? explicit}) {
     return 'Q';
   }
 }

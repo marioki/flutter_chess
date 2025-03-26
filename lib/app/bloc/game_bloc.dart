@@ -15,7 +15,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
   final CoreChess _coreChess = CoreChess();
 
-  void _onChessPieceMoved(ChessPieceMoved event, Emitter<GameState> emit) {}
+  void _onChessPieceMoved(ChessPieceMoved event, Emitter<GameState> emit) {
+    print('*Handler* Moving piece: ${event.lanMove}');
+    final newFen = _coreChess.makeMove(state.fen, event.lanMove);
+    emit(state.copyWith(fen: newFen, possibleMoves: []));
+  }
 
   void onChessPieceSelected(ChessPieceSelected event, Emitter<GameState> emit) {
     List<String> moves = _coreChess.getLegalMoves(state.fen, event.anSquare);
