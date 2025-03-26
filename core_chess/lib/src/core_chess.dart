@@ -59,44 +59,73 @@ class CoreChess {
 
     return strings;
   }
-}
 
-/// Converts a [GamePosition] object to a FEN string.
-///
-/// [GamePosition] The board state to convert.
-String fenFromGamePosition(GamePosition gamePosition) {
-  // Implementation to convert GamePosition to FEN string
-  // ...
-  return '';
-}
+  String makeMove(String fen, String lanMove) {
+    final gamePosition = GamePosition.fromFEN(fen);
+    final move = Move.fromLan(lan: lanMove);
+    try {
+      final newGamePosition = applyMove(gamePosition, move);
+      return newGamePosition.toFenString();
+    } catch (e) {
+      print('Invalid Move');
+      return fen;
+    }
+  }
 
-/// Checks if a move is valid according to the rules of chess.
-///
-/// [GamePosition] The current board state.
-/// [move] The move to validate.
-bool isValidMove(GamePosition gamePosition, Move move) {
-  return true;
-}
+  /// Converts a [GamePosition] object to a FEN string.
+  ///
+  /// [GamePosition] The board state to convert.
+  String fenFromGamePosition(GamePosition gamePosition) {
+    // Implementation to convert GamePosition to FEN string
+    // ...
+    return '';
+  }
 
-/// Applies a move to the board state and returns the new board state.
-///
-/// [GamePosition] The current board state.
-/// [move] The move to apply.
-GamePosition applyMove(GamePosition gamePosition, Move move) {
-  // Implementation to apply the move and return the new board state
-  // ...
-  return gamePosition;
-}
+  /// Checks if a move is valid according to the rules of chess.
+  ///
+  /// [GamePosition] The current board state.
+  /// [move] The move to validate.
+  bool isValidMove(GamePosition gamePosition, Move move) {
+    return true;
+  }
 
-/// Generates a list of possible moves for a piece at the given coordinate.
-///
-/// [GamePosition] The current board state.
-/// [coordinate] The coordinate of the selected piece.
-List<String> generatePossibleMoves(GamePosition gamePosition, Coordinate coordinate) {
-  final possibleMoves = <Coordinate>[];
-  final squareData = gamePosition.squareGrid[coordinate.file][coordinate.rank];
+  /// Applies a move to the board state and returns the new board state.
+  ///
+  /// [GamePosition] The current board state.
+  /// [move] The move to apply.
+  GamePosition applyMove(GamePosition gamePosition, Move move) {
+    final originCoordinate = move.origin;
+    final targetCoordinate = move.target;
+    final originSquare = gamePosition.squareGrid[originCoordinate.rank][originCoordinate.file];
+    final piece = originSquare.piece;
+    final potientialTargetCoordinates =
+        piece!.getPotientialTargetCoordinate(gamePosition, originCoordinate);
 
-  squareData.piece?.getPotientialTargetCoordinate(gamePosition, coordinate);
+    if (!potientialTargetCoordinates.contains(targetCoordinate)) {
+      throw Exception('Invalid move');
+    }
 
-  return [];
+    gamePosition.squareGrid[targetCoordinate.rank][targetCoordinate.file] = SquareData(
+      piece,
+      coordinate: targetCoordinate,
+    );
+    gamePosition.squareGrid[originCoordinate.rank][originCoordinate.file] = SquareData(
+      null,
+      coordinate: originCoordinate,
+    );
+    return gamePosition;
+  }
+
+  /// Generates a list of possible moves for a piece at the given coordinate.
+  ///
+  /// [GamePosition] The current board state.
+  /// [coordinate] The coordinate of the selected piece.
+  List<String> generatePossibleMoves(GamePosition gamePosition, Coordinate coordinate) {
+    final possibleMoves = <Coordinate>[];
+    final squareData = gamePosition.squareGrid[coordinate.file][coordinate.rank];
+
+    squareData.piece?.getPotientialTargetCoordinate(gamePosition, coordinate);
+
+    return [];
+  }
 }

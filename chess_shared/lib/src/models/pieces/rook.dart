@@ -9,7 +9,7 @@ class Rook extends ChessPiece {
   /// Creates a [Rook] chess piece with the given [side].
   ///
   /// [side] determines whether the Rook belongs to the white or black side.
-  Rook({required super.side});
+  Rook({super.side});
 
   /// Calculates all potential moves for the Rook from the given [originCoordinate].
   ///
@@ -24,7 +24,8 @@ class Rook extends ChessPiece {
   /// in that direction. If it encounters an opponent's piece, it can capture it
   /// but cannot move beyond that square.
   @override
-  List<Coordinate> getPotientialTargetCoordinate(GamePosition gamePosition, Coordinate originCoordinate) {
+  List<Coordinate> getPotientialTargetCoordinate(
+      GamePosition gamePosition, Coordinate originCoordinate) {
     final board = gamePosition.squareGrid;
     final posibleMoves = <Coordinate>[];
     final posibleSquares = <SquareData>[];
@@ -109,7 +110,7 @@ class Rook extends ChessPiece {
   }
 
   @override
-  String getSingleCharRepresentation() {
+  String getSingleCharRepresentation({bool? explicit}) {
     return 'R';
   }
 }

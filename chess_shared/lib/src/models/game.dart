@@ -1,8 +1,4 @@
-import 'package:chess_shared/src/helpers/parse_fen_string.dart';
-
-import 'package:chess_shared/src/models/coordinate.dart';
-import 'package:chess_shared/src/models/piece.dart';
-import 'package:chess_shared/src/models/square.dart';
+import 'package:chess_shared/chess_shared.dart';
 
 /// Represents the state of a chess game.
 class GamePosition {
@@ -42,6 +38,58 @@ class GamePosition {
       fullMoveNumber: int.parse(fullMoveClockSegment),
       enPassant: enPassantSegment == '-' ? null : Coordinate.fromAlgebraic(enPassantSegment),
     );
+  }
+
+  /// Converts the game state to a FEN string.
+  /// Returns the FEN string representing the game state.
+  String toFenString() {
+    String fen = '';
+    for (int row = 7; row >= 0; row--) {
+      int emptySquareCounter = 0;
+      for (int column = 0; column < 8; column++) {
+        if (squareGrid[row][column].piece == null) {
+          emptySquareCounter++;
+        } else {
+          if (emptySquareCounter > 0) {
+            fen += emptySquareCounter.toString();
+            emptySquareCounter = 0;
+          }
+          fen += chessPieceToFen(squareGrid[row][column].piece!);
+        }
+      }
+      if (emptySquareCounter > 0) {
+        fen += emptySquareCounter.toString();
+      }
+      if (row <= 7) {
+        fen += '/';
+      }
+    }
+    fen += ' ';
+    fen += sideToMove == Side.white ? 'w' : 'b';
+    fen += ' ';
+    if (whiteKingSideCasttle) {
+      fen += 'K';
+    }
+    if (whiteQueenSideCasttle) {
+      fen += 'Q';
+    }
+    if (blackKingSideCasttle) {
+      fen += 'k';
+    }
+    if (blackQueenSideCasttle) {
+      fen += 'q';
+    }
+    if (fen.endsWith(' ')) {
+      fen += '-';
+    }
+    fen += ' ';
+    fen += enPassant?.algebraic ?? '-';
+    fen += ' ';
+    fen += halfMoveClock.toString();
+    fen += ' ';
+    fen += fullMoveNumber.toString();
+    print('**FEN** $fen');
+    return fen;
   }
 
   /// The side (color) to move next.

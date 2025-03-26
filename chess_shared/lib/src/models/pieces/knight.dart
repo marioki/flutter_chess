@@ -9,7 +9,7 @@ class Knight extends ChessPiece {
   /// Creates a [Knight] chess piece with the given [side].
   ///
   /// [side] determines whether the Knight belongs to the white or black side.
-  Knight({required super.side});
+  Knight({ super.side});
 
   /// Calculates all potential moves for the Knight from the given [originCoordinate].
   ///
@@ -51,7 +51,7 @@ class Knight extends ChessPiece {
   }
 
   @override
-  String getSingleCharRepresentation() {
+  String getSingleCharRepresentation({bool? explicit}) {
     return 'N';
   }
 }

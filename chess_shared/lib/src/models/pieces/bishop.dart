@@ -11,7 +11,7 @@ class Bishop extends ChessPiece {
   /// Creates a [Bishop] chess piece with the given [side].
   ///
   /// [side] determines whether the Bishop belongs to the white or black side.
-  Bishop({required super.side});
+  Bishop({super.side});
 
   /// Calculates all potential moves for the Bishop from the given [originCoordinate].
   ///
@@ -26,7 +26,8 @@ class Bishop extends ChessPiece {
   /// in that direction. If it encounters an opponent's piece, it can capture it
   /// but cannot move beyond that square.
   @override
-  List<Coordinate> getPotientialTargetCoordinate(GamePosition gamePosition, Coordinate originCoordinate) {
+  List<Coordinate> getPotientialTargetCoordinate(
+      GamePosition gamePosition, Coordinate originCoordinate) {
     final board = gamePosition.squareGrid;
 
     // Lists to store potential moves in each diagonal direction
@@ -152,7 +153,7 @@ class Bishop extends ChessPiece {
   }
 
   @override
-  String getSingleCharRepresentation() {
+  String getSingleCharRepresentation({bool? explicit}) {
     return 'B';
   }
 }
