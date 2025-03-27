@@ -1,7 +1,7 @@
 import 'package:chess_shared/chess_shared.dart';
 
 class Pawn extends ChessPiece {
-  Pawn({super.side});
+  Pawn({super.side}) : super(pieceType: PieceType.pawn);
 
   @override
   List<Coordinate> getPotientialTargetCoordinate(

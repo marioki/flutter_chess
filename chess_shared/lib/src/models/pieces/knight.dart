@@ -9,7 +9,7 @@ class Knight extends ChessPiece {
   /// Creates a [Knight] chess piece with the given [side].
   ///
   /// [side] determines whether the Knight belongs to the white or black side.
-  Knight({ super.side});
+  Knight({super.side}) : super(pieceType: PieceType.knight);
 
   /// Calculates all potential moves for the Knight from the given [originCoordinate].
   ///
@@ -20,7 +20,8 @@ class Knight extends ChessPiece {
   /// the Knight can make. The Knight moves in an "L" shape and can jump over
   /// other pieces.
   @override
-  List<Coordinate> getPotientialTargetCoordinate(GamePosition gamePosition, Coordinate originCoordinate) {
+  List<Coordinate> getPotientialTargetCoordinate(
+      GamePosition gamePosition, Coordinate originCoordinate) {
     final board = gamePosition.squareGrid;
     final posibleMoves = <Coordinate>[];
 

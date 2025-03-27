@@ -9,7 +9,7 @@ class Queen extends ChessPiece {
   /// Creates a [Queen] chess piece with the given [side].
   ///
   /// [side] determines whether the Queen belongs to the white or black side.
-  Queen({ super.side});
+  Queen({super.side}) : super(pieceType: PieceType.queen);
 
   /// Calculates all potential moves for the Queen from the given [originCoordinate].
   ///
@@ -23,7 +23,8 @@ class Queen extends ChessPiece {
   /// The Queen cannot move to a square occupied by a piece of the same side,
   /// but it can capture opponent pieces.
   @override
-  List<Coordinate> getPotientialTargetCoordinate(GamePosition gamePosition, Coordinate originCoordinate) {
+  List<Coordinate> getPotientialTargetCoordinate(
+      GamePosition gamePosition, Coordinate originCoordinate) {
     final posibleMoves = <Coordinate>[];
     final board = gamePosition.squareGrid;
 

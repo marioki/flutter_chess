@@ -8,7 +8,7 @@ class King extends ChessPiece {
   /// Creates a [King] chess piece with the given [side].
   ///
   /// [side] determines whether the King belongs to the white or black side.
-  King({ super.side});
+  King({super.side}) : super(pieceType: PieceType.king);
 
   /// Calculates all potential moves for the King from the given [originCoordinate].
   ///
@@ -20,7 +20,8 @@ class King extends ChessPiece {
   /// (north, south, east, west, or diagonally). It cannot move to a square
   /// occupied by a piece of the same side.
   @override
-  List<Coordinate> getPotientialTargetCoordinate(GamePosition gamePosition, Coordinate originCoordinate) {
+  List<Coordinate> getPotientialTargetCoordinate(
+      GamePosition gamePosition, Coordinate originCoordinate) {
     final posibleMoves = <Coordinate>[];
     final board = gamePosition.squareGrid;
 
@@ -94,7 +95,7 @@ class King extends ChessPiece {
 
     return posibleMoves;
   }
-  
+
   @override
   String getSingleCharRepresentation({bool? explicit}) {
     return 'K';

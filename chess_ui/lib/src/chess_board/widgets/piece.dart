@@ -13,7 +13,7 @@ class PieceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/pieces/${piece.side!.name}_${piece.runtimeType.toString().toLowerCase()}.png',
+      'assets/pieces/${piece.side!.name}_${piece.pieceType.name}.png',
     );
   }
 }

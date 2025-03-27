@@ -9,6 +9,8 @@ enum Side {
   black
 }
 
+enum PieceType { pawn, rook, knight, bishop, queen, king }
+
 /// Represents a chess piece on the board.
 abstract class ChessPiece {
   /// Creates a [ChessPiece] with the given [side].
@@ -16,11 +18,13 @@ abstract class ChessPiece {
   /// [side] determines whether the chess piece belongs to the white or black side.
 
   ChessPiece({
+    required this.pieceType,
     this.side,
   });
 
   /// The color of the chess piece (e.g., white, black).
   final Side? side;
+  final PieceType pieceType;
 
   /// Calculates all potential moves for the chess piece from the given [originCoordinate].
   List<Coordinate> getPotientialTargetCoordinate(
