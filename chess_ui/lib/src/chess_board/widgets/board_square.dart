@@ -9,12 +9,14 @@ class BoardSquare extends StatelessWidget {
     required this.isLight,
     required this.onMove,
     required this.onSelectPiece,
+    required this.sideToMove,
     this.isHighLighted = false,
     super.key,
   });
   final SquareData squareData;
   final bool isLight;
   final bool isHighLighted;
+  final Side sideToMove;
   final void Function(String) onMove;
   final void Function(String) onSelectPiece;
 
@@ -38,7 +40,9 @@ class BoardSquare extends StatelessWidget {
               ),
             ),
             if (isHighLighted) Container(color: Colors.green.withAlpha(100)) else Container(),
-            if (squareData.piece != null)
+            if (squareData.piece == null)
+              Container()
+            else if (squareData.piece!.side == sideToMove)
               Draggable<SquareData>(
                 data: squareData,
                 feedback: PieceWidget(piece: squareData.piece!),
@@ -60,7 +64,9 @@ class BoardSquare extends StatelessWidget {
                 ),
               )
             else
-              Container(),
+              SizedBox.expand(
+                child: PieceWidget(piece: squareData.piece!),
+              ),
           ],
         );
       },

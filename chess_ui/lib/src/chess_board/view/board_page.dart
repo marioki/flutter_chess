@@ -68,6 +68,7 @@ class ChessBoard extends StatelessWidget {
                                       squareData: gameState.squareGrid[(row - 7).abs()][col],
                                       isLight: isLightSquare,
                                       onMove: onMove,
+                                      sideToMove: gameState.sideToMove,
                                       onSelectPiece: onSelectPiece,
                                       isHighLighted: possibleMoves.contains(
                                         gameState
