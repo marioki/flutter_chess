@@ -72,6 +72,7 @@ class BoardSquare extends StatelessWidget {
       },
       onAcceptWithDetails: (pieceDraggable) {
         if (pieceDraggable.data.coordinate == squareData.coordinate) {
+          print('same square');
           return;
         }
         //for move events

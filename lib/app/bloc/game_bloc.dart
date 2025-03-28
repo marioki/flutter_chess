@@ -8,7 +8,7 @@ part 'game_state.dart';
 class GameBloc extends Bloc<GameEvent, GameState> {
   GameBloc()
       : super(
-          const GameState(fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 0'),
+          const GameState(fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0'),
         ) {
     on<ChessPieceMoved>(_onChessPieceMoved);
     on<ChessPieceSelected>(onChessPieceSelected);
@@ -22,7 +22,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void onChessPieceSelected(ChessPieceSelected event, Emitter<GameState> emit) {
-    List<String> moves = _coreChess.getLegalMoves(state.fen, event.anSquare);
+    final moves = _coreChess.getLegalMoves(state.fen, event.anSquare);
     print('*Handler* Calculated moves: $moves');
     emit(state.copyWith(possibleMoves: moves));
   }

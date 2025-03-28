@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:chess_shared/chess_shared.dart';
 
 /// Represents the state of a chess game.
@@ -39,6 +40,33 @@ class GamePosition {
       enPassant: enPassantSegment == '-' ? null : Coordinate.fromAlgebraic(enPassantSegment),
     );
   }
+
+  /// The side (color) to move next.
+  Side sideToMove;
+
+  /// Whether white can castle queenside.
+  bool whiteQueenSideCasttle;
+
+  /// Whether white can castle kingside.
+  bool whiteKingSideCasttle;
+
+  /// Whether black can castle queenside.
+  bool blackQueenSideCasttle;
+
+  /// Whether black can castle kingside.
+  bool blackKingSideCasttle;
+
+  /// The en passant target square, if any.
+  Coordinate? enPassant;
+
+  /// The number of half moves since the last capture or pawn move.
+  int halfMoveClock;
+
+  /// The number of full moves in the game.
+  int fullMoveNumber;
+
+  /// The grid of squares representing the board state.
+  List<List<SquareData>> squareGrid;
 
   /// Converts the game state to a FEN string.
   /// Returns the FEN string representing the game state.
@@ -92,30 +120,28 @@ class GamePosition {
     return fen;
   }
 
-  /// The side (color) to move next.
-  Side sideToMove;
-
-  /// Whether white can castle queenside.
-  bool whiteQueenSideCasttle;
-
-  /// Whether white can castle kingside.
-  bool whiteKingSideCasttle;
-
-  /// Whether black can castle queenside.
-  bool blackQueenSideCasttle;
-
-  /// Whether black can castle kingside.
-  bool blackKingSideCasttle;
-
-  /// The en passant target square, if any.
-  Coordinate? enPassant;
-
-  /// The number of half moves since the last capture or pawn move.
-  int halfMoveClock;
-
-  /// The number of full moves in the game.
-  int fullMoveNumber;
-
-  /// The grid of squares representing the board state.
-  List<List<SquareData>> squareGrid;
+  GamePosition copyWith({
+    Side? sideToMove,
+    bool? whiteQueenSideCasttle,
+    bool? whiteKingSideCasttle,
+    bool? blackQueenSideCasttle,
+    bool? blackKingSideCasttle,
+    Coordinate? enPassant,
+    int? halfMoveClock,
+    int? fullMoveNumber,
+    List<List<SquareData>>? squareGrid,
+  }) {
+    return GamePosition(
+      sideToMove: sideToMove ?? this.sideToMove,
+      whiteQueenSideCasttle: whiteQueenSideCasttle ?? this.whiteQueenSideCasttle,
+      whiteKingSideCasttle: whiteKingSideCasttle ?? this.whiteKingSideCasttle,
+      blackQueenSideCasttle: blackQueenSideCasttle ?? this.blackQueenSideCasttle,
+      blackKingSideCasttle: blackKingSideCasttle ?? this.blackKingSideCasttle,
+      enPassant: enPassant ?? this.enPassant,
+      halfMoveClock: halfMoveClock ?? this.halfMoveClock,
+      fullMoveNumber: fullMoveNumber ?? this.fullMoveNumber,
+      squareGrid: squareGrid ??
+          this.squareGrid.map((row) => row.map((square) => square.copyWith()).toList()).toList(),
+    );
+  }
 }
