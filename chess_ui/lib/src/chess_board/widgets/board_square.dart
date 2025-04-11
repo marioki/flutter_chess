@@ -32,12 +32,19 @@ class BoardSquare extends StatelessWidget {
               color: isLight
                   ? const Color.fromRGBO(69, 123, 157, 1)
                   : const Color.fromRGBO(241, 250, 250, 1),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Text(
-                  '${squareData.coordinate.algebraic}\n${squareData.coordinate.file},${squareData.coordinate.rank}',
-                ),
-              ),
+              child: (squareData.coordinate.file == 0 || squareData.coordinate.rank == 0)
+                  ? Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        squareData.coordinate.algebraic,
+                        style: TextStyle(
+                          color: isLight ? Colors.white : Colors.black,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : null,
             ),
             if (isHighLighted) Container(color: Colors.green.withAlpha(100)) else Container(),
             if (squareData.piece == null)

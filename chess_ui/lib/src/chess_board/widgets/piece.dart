@@ -12,8 +12,11 @@ class PieceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      'assets/pieces/${piece.side!.name}_${piece.pieceType.name}.png',
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: Image.asset(
+        'assets/pieces/${piece.side!.name}_${piece.pieceType.name}.png',
+      ),
     );
   }
 }
