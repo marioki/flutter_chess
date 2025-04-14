@@ -24,82 +24,97 @@ class BigLayout extends StatelessWidget {
                   child: Text('Draw!'),
                 );
               }
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 8,
-                    ),
-                    child: Center(
-                      child: ChessBoard(
-                        fen: state.fen,
-                        possibleMoves: state.possibleMoves,
-                        onMove: (lanMove) {
-                          BlocProvider.of<GameBloc>(context).add(ChessPieceMoved(lanMove));
-                        },
-                        onSelectPiece: (anSquare) {
-                          BlocProvider.of<GameBloc>(context).add(ChessPieceSelected(anSquare));
+                  AppBar(
+                    title: const Text('Chess Game'),
+                    actions: [
+                      IconButton(
+                        icon: const Icon(Icons.restore),
+                        onPressed: () {
+                          BlocProvider.of<GameBloc>(context).add(const ChessGameRestart());
                         },
                       ),
-                    ),
+                    ],
                   ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          maxWidth: 300,
-                          maxHeight: 1000,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 8,
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Move History',
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            Flexible(
-                              child: ListView.builder(
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text('Move ${index + 1}'),
-                                    subtitle: const Text('Move details here'),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          maxWidth: 600,
-                          maxHeight: 1000,
-                        ),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Text(
-                                'Game Status',
-                                style: Theme.of(context).textTheme.headlineSmall,
-                              ),
-                              ListTile(
-                                title: const Text('FEN'),
-                                subtitle: Text(state.fen),
-                              ),
-                              ListTile(
-                                title: const Text('Possible Moves'),
-                                subtitle: Text(state.possibleMoves.toString()),
-                              ),
-                              const ListTile(
-                                title: Text('Captured Pieces'),
-                              ),
-                            ],
+                        child: Center(
+                          child: ChessBoard(
+                            fen: state.fen,
+                            possibleMoves: state.possibleMoves,
+                            onMove: (lanMove) {
+                              BlocProvider.of<GameBloc>(context).add(ChessPieceMoved(lanMove));
+                            },
+                            onSelectPiece: (anSquare) {
+                              BlocProvider.of<GameBloc>(context).add(ChessPieceSelected(anSquare));
+                            },
                           ),
                         ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              maxWidth: 300,
+                              maxHeight: 1000,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Move History',
+                                  style: Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                Flexible(
+                                  child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        title: Text('Move ${index + 1}'),
+                                        subtitle: const Text('Move details here'),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              maxWidth: 600,
+                              maxHeight: 1000,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Game Status',
+                                    style: Theme.of(context).textTheme.headlineSmall,
+                                  ),
+                                  ListTile(
+                                    title: const Text('FEN'),
+                                    subtitle: Text(state.fen),
+                                  ),
+                                  ListTile(
+                                    title: const Text('Possible Moves'),
+                                    subtitle: Text(state.possibleMoves.toString()),
+                                  ),
+                                  const ListTile(
+                                    title: Text('Captured Pieces'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

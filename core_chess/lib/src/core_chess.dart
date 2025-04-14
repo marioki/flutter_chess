@@ -8,29 +8,18 @@ class CoreChess {
     final gamePosition = GamePosition.fromFEN(fen);
     final move = Move.fromLan(lan: lanMove);
 
-    // if (piece == null) {
-    //   throw Exception('No piece at the origin square');
-    // }
-
-    // if (piece.side != gamePosition.sideToMove) {
-    //   throw Exception('Not your turn');
-    // }
-
-    // if (gamePosition.squareGrid[targetCoordinate.rank][targetCoordinate.file].piece?.side ==
-    //     gamePosition.sideToMove) {
-    //   throw Exception('Cannot capture your own piece');
-    // }
-
     // Validate the move using the piece's move set
 
     if (!isMoveValid(gamePosition, move)) {
       throw Exception('Invalid move for the piece');
     }
 
-    validateMoveByLegality(gamePosition, move);
+    if (!isMoveLegal(gamePosition, move)) {
+      throw Exception('Move exposes the king to check');
+    }
 
     final newGamePosition = applyMove(gamePosition, move);
-
+    //TODO: Add logic for updating move clocks correctly
     newGamePosition.fullMoveNumber++;
     newGamePosition.halfMoveClock++;
 
@@ -84,7 +73,8 @@ class CoreChess {
                 origin: squareData.coordinate,
                 target: targetCoordinate,
               );
-              if (!isKingInCheck(gamePosition, ownKingCoordinate)) {
+
+              if (isMoveLegal(gamePosition, move)) {
                 potentialMoves.add(move);
               }
             }
@@ -113,7 +103,7 @@ class CoreChess {
     }
   }
 
-  void validateMoveByLegality(GamePosition gamePosition, Move move) {
+  bool isMoveLegal(GamePosition gamePosition, Move move) {
     /**
      * Rules to validate
      * 1. Check if the moving piece exposes the king to check.
@@ -123,9 +113,7 @@ class CoreChess {
     final futureGamePosition = applyMove(gamePosition, move);
     final ownKingCoordinate = getOwnKingCoordinate(futureGamePosition);
 
-    if (isKingInCheck(futureGamePosition, ownKingCoordinate)) {
-      throw Exception('Move exposes the king to check');
-    }
+    return !isKingInCheck(futureGamePosition, ownKingCoordinate);
   }
 
   /// Applies a move to the board state and returns the new board state.

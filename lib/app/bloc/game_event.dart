@@ -27,3 +27,10 @@ class ChessPieceSelected extends GameEvent {
   @override
   List<Object> get props => [anSquare];
 }
+
+class ChessGameRestart extends GameEvent {
+  const ChessGameRestart();
+
+  @override
+  List<Object> get props => [];
+}

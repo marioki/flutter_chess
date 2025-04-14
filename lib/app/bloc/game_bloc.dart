@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:chess_shared/chess_shared.dart';
 import 'package:core_chess/core_chess.dart';
@@ -7,15 +9,17 @@ part 'game_event.dart';
 part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
+  static const String initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0';
   GameBloc()
       : super(
           const GameState(
-            fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0',
+            fen: initialFen,
             gameStatus: GameStatus.playing,
           ),
         ) {
     on<ChessPieceMoved>(_onChessPieceMoved);
     on<ChessPieceSelected>(onChessPieceSelected);
+    on<ChessGameRestart>(onChessGameRestart);
   }
   final CoreChess _coreChess = CoreChess();
 
@@ -40,5 +44,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     final moves = _coreChess.getLegalMovesForPiece(state.fen, event.anSquare);
     print('*Handler* Calculated moves: $moves');
     emit(state.copyWith(possibleMoves: moves));
+  }
+
+  FutureOr<void> onChessGameRestart(ChessGameRestart event, Emitter<GameState> emit) {
+    emit(
+      const GameState(
+        fen: initialFen,
+        gameStatus: GameStatus.playing,
+      ),
+    );
   }
 }
