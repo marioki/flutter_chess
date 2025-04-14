@@ -25,48 +25,41 @@ class ChessBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final gameState = GamePosition.fromFEN(fen);
 
+    const double boardMaxWidth = 1000;
+    const double boardMaxheight = 1000;
     return Container(
       constraints: const BoxConstraints(
-        maxWidth: 1000,
+        maxWidth: boardMaxWidth,
+        maxHeight: boardMaxheight,
       ),
+      decoration: BoxDecoration(border: Border.all()),
       child: AspectRatio(
         aspectRatio: 1,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: Row(
-                        children: List.generate(8, (col) {
-                          return Expanded(
-                            child: Column(
-                              children: List.generate(8, (row) {
-                                final isLightSquare = (row + col).isOdd;
-                                return Expanded(
-                                  child: BoardSquare(
-                                    squareData: gameState.squareGrid[(row - 7).abs()][col],
-                                    isLight: isLightSquare,
-                                    onMove: onMove,
-                                    sideToMove: gameState.sideToMove,
-                                    onSelectPiece: onSelectPiece,
-                                    isHighLighted: possibleMoves.contains(
-                                      gameState
-                                          .squareGrid[(row - 7).abs()][col].coordinate.algebraic,
-                                    ),
-                                  ),
-                                );
-                              }),
+              child: Row(
+                children: List.generate(8, (col) {
+                  return Expanded(
+                    child: Column(
+                      children: List.generate(8, (row) {
+                        final isLightSquare = (row + col).isOdd;
+                        return Expanded(
+                          child: BoardSquare(
+                            squareData: gameState.squareGrid[(row - 7).abs()][col],
+                            isLight: isLightSquare,
+                            onMove: onMove,
+                            sideToMove: gameState.sideToMove,
+                            onSelectPiece: onSelectPiece,
+                            isHighLighted: possibleMoves.contains(
+                              gameState.squareGrid[(row - 7).abs()][col].coordinate.algebraic,
                             ),
-                          );
-                        }),
-                      ),
+                          ),
+                        );
+                      }),
                     ),
-                  ),
-                ],
+                  );
+                }),
               ),
             ),
           ],

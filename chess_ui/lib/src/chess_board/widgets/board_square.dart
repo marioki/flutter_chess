@@ -27,8 +27,6 @@ class BoardSquare extends StatelessWidget {
         return Stack(
           children: [
             Container(
-              width: double.maxFinite,
-              height: double.maxFinite,
               color: isLight
                   ? const Color.fromRGBO(69, 123, 157, 1)
                   : const Color.fromRGBO(241, 250, 250, 1),
@@ -48,7 +46,7 @@ class BoardSquare extends StatelessWidget {
             ),
             if (isHighLighted) Container(color: Colors.green.withAlpha(100)) else Container(),
             if (squareData.piece == null)
-              Container()
+              const SizedBox.shrink()
             else if (squareData.piece!.side == sideToMove)
               Draggable<SquareData>(
                 data: squareData,

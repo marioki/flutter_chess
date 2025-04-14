@@ -1,7 +1,5 @@
-import 'package:chess_ui/chess_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chess/app/bloc/game_bloc.dart';
+import 'package:flutter_chess/app/widgets/widgets.dart';
 import 'package:flutter_chess/l10n/l10n.dart';
 
 class App extends StatelessWidget {
@@ -18,31 +16,26 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: Scaffold(
-        body: SafeArea(
-          child: BlocProvider(
-            create: (context) => GameBloc(),
-            child: Container(
-              margin: const EdgeInsets.all(16),
-              child: BlocBuilder<GameBloc, GameState>(
-                builder: (context, state) {
-                  return ChessBoard(
-                    fen: state.fen,
-                    possibleMoves: state.possibleMoves,
-                    onMove: (lanMove) {
-                      BlocProvider.of<GameBloc>(context).add(ChessPieceMoved(lanMove));
-                    },
-                    onSelectPiece: (anSquare) {
-                      print('*UI* Selected Piece Square: $anSquare');
-                      BlocProvider.of<GameBloc>(context).add(ChessPieceSelected(anSquare));
-                    },
-                  );
-                },
-              ),
-            ),
-          ),
-        ),
-      ),
+      home: const ChessGameLayout(),
+    );
+  }
+}
+
+class ChessGameLayout extends StatelessWidget {
+  const ChessGameLayout({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 1600) {
+          return const BigLayout();
+        } else if (constraints.maxWidth > 800) {
+          return const MediumLayout();
+        } else {
+          return const SmallLayout();
+        }
+      },
     );
   }
 }
