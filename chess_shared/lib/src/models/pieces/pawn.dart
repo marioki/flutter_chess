@@ -7,10 +7,12 @@ class Pawn extends ChessPiece {
   List<Coordinate> getPotientialTargetCoordinate(
       GamePosition gamePosition, Coordinate originCoordinate) {
     {
-      if (side == Side.white && originCoordinate.rank < 1) {
+      if (side == Side.white && originCoordinate.rank < 1 ||
+          side == Side.white && originCoordinate.rank > 6) {
         return [];
       }
-      if (side == Side.black && originCoordinate.rank > 6) {
+      if (side == Side.black && originCoordinate.rank > 6 ||
+          side == Side.black && originCoordinate.rank < 1) {
         return [];
       }
 
