@@ -19,6 +19,25 @@ class CoreChess {
     }
 
     final newGamePosition = applyMove(gamePosition, move);
+
+    if (move.chessPiece.pieceType == PieceType.pawn &&
+        (move.origin.rank - move.target.rank).abs() == 2) {
+      if (gamePosition.sideToMove == Side.white) {
+        newGamePosition.enPassant = Coordinate(
+          file: move.target.file,
+          rank: move.target.rank - 1,
+        );
+      } else {
+        newGamePosition.enPassant = Coordinate(
+          file: move.target.file,
+          rank: move.target.rank + 1,
+        );
+      }
+    } else {
+      // Reset en passant target square if the move is not a double pawn move
+      newGamePosition.enPassant = null;
+    }
+
     //TODO: Add logic for updating move clocks correctly
     newGamePosition.fullMoveNumber++;
     newGamePosition.halfMoveClock++;
@@ -141,6 +160,17 @@ class CoreChess {
       null,
       coordinate: originCoordinate,
     );
+
+    if (targetCoordinate == gamePosition.enPassant) {
+      // Handle en passant capture
+      final capturedPawnCoordinate = Coordinate(
+        file: targetCoordinate.file,
+        rank: targetCoordinate.rank + (piece.side == Side.white ? -1 : 1),
+      );
+
+      newGamePosition.squareGrid[capturedPawnCoordinate.rank][capturedPawnCoordinate.file] =
+          SquareData(null, coordinate: capturedPawnCoordinate);
+    }
     return newGamePosition;
   }
 

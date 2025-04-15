@@ -45,7 +45,8 @@ class Pawn extends ChessPiece {
       if (originCoordinate.file > 0) {
         diagonalWest = board[originCoordinate.rank + direction][originCoordinate.file - 1];
 
-        if (diagonalWest.piece?.side != null && diagonalWest.piece?.side != side) {
+        if (diagonalWest.piece?.side != null && diagonalWest.piece?.side != side ||
+            diagonalWest.coordinate == gamePosition.enPassant) {
           posibleMoves.add(
             Coordinate(
               file: diagonalWest.coordinate.file,
@@ -58,7 +59,8 @@ class Pawn extends ChessPiece {
       if (originCoordinate.file < 7) {
         diagonalEast = board[originCoordinate.rank + direction][originCoordinate.file + 1];
 
-        if (diagonalEast.piece?.side != null && diagonalEast.piece?.side != side) {
+        if (diagonalEast.piece?.side != null && diagonalEast.piece?.side != side ||
+            diagonalEast.coordinate == gamePosition.enPassant) {
           posibleMoves.add(
             Coordinate(
               file: diagonalEast.coordinate.file,
