@@ -20,6 +20,7 @@ class CoreChess {
 
     final newGamePosition = applyMove(gamePosition, move);
 
+    // Setting up en passant target square
     if (move.chessPiece.pieceType == PieceType.pawn &&
         (move.origin.rank - move.target.rank).abs() == 2) {
       if (gamePosition.sideToMove == Side.white) {
@@ -161,7 +162,7 @@ class CoreChess {
       coordinate: originCoordinate,
     );
 
-    if (targetCoordinate == gamePosition.enPassant) {
+    if (move.chessPiece.pieceType == PieceType.pawn && targetCoordinate == gamePosition.enPassant) {
       // Handle en passant capture
       final capturedPawnCoordinate = Coordinate(
         file: targetCoordinate.file,
