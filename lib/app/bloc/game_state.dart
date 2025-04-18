@@ -8,6 +8,7 @@ class GameState extends Equatable {
     this.possibleMoves = const [],
     this.promotionMove,
     this.promotionPiece,
+    this.moveHistory = const [],
   });
 
   final String fen;
@@ -15,6 +16,7 @@ class GameState extends Equatable {
   final GameStatus gameStatus;
   final Move? promotionMove;
   final String? promotionPiece;
+  final List<String> moveHistory;
 
   @override
   List<Object?> get props => [fen, possibleMoves, gameStatus, promotionMove, promotionPiece];
@@ -25,6 +27,7 @@ class GameState extends Equatable {
     List<String>? possibleMoves,
     Move? promotionMove,
     String? promotionPiece,
+    List<String>? moveHistory,
   }) {
     return GameState(
       fen: fen ?? this.fen,
@@ -32,6 +35,7 @@ class GameState extends Equatable {
       gameStatus: gameStatus,
       promotionMove: promotionMove,
       promotionPiece: promotionPiece,
+      moveHistory: moveHistory ?? this.moveHistory,
     );
   }
 }

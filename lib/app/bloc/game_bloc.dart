@@ -34,6 +34,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           fen: gameData.fen,
           possibleMoves: [],
           gameStatus: gameData.status,
+          moveHistory: List.from(state.moveHistory)..add(event.lanMove),
         ),
       );
     } catch (exception) {
@@ -85,10 +86,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   FutureOr<void> onPawnPromotionConfirmed(PawnPromotionConfirmed event, Emitter<GameState> emit) {
-    final String pieceChar = getPieceTypeString(event.pieceType);
-    final String lanPromotionMove = '${state.promotionMove!.lan}=$pieceChar';
-
-    print('Pawn promotion confirmed with move: $lanPromotionMove');
+    final pieceChar = getPieceTypeString(event.pieceType);
+    final lanPromotionMove = '${state.promotionMove!.lan}=$pieceChar';
 
     add(ChessPieceMoved(lanPromotionMove));
   }

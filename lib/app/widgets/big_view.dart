@@ -51,30 +51,8 @@ class BigLayout extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: 300,
-                        maxHeight: 1000,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Move History',
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          Flexible(
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text('Move ${index + 1}'),
-                                  subtitle: const Text('Move details here'),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                    MoveHistorySection(
+                      lanMoves: state.moveHistory,
                     ),
                     ConstrainedBox(
                       constraints: const BoxConstraints(
@@ -109,6 +87,44 @@ class BigLayout extends StatelessWidget {
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+class MoveHistorySection extends StatelessWidget {
+  const MoveHistorySection({
+    required this.lanMoves,
+    super.key,
+  });
+
+  final List<String> lanMoves;
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: 300,
+        maxHeight: 1000,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Move History',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          Flexible(
+            child: ListView.builder(
+              itemCount: lanMoves.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text('Move ${index + 1}'),
+                  subtitle: Text(lanMoves[index]),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

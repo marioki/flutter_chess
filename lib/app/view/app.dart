@@ -90,7 +90,7 @@ class ChessGameLayout extends StatelessWidget {
 
   // This function will show the pawn promotion dialog and handle the bloc event correctly
   void _showPawnPromotionDialog(BuildContext dialogContext) {
-    showDialog(
+    showDialog<void>(
       context: dialogContext,
       barrierDismissible: false,
       builder: (context) {
