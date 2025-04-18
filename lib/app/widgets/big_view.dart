@@ -3,6 +3,7 @@ import 'package:chess_ui/chess_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chess/app/bloc/game_bloc.dart';
+import 'package:flutter_chess/app/widgets/small_view.dart';
 
 class BigLayout extends StatelessWidget {
   const BigLayout({super.key});
@@ -47,41 +48,17 @@ class BigLayout extends StatelessWidget {
                     ),
                   ),
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    MoveHistorySection(
-                      lanMoves: state.moveHistory,
-                    ),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: 600,
-                        maxHeight: 1000,
+                Expanded(
+                  child: Row(
+                    children: [
+                      MoveHistorySection(lanMoves: state.moveHistory),
+                      GameStatusSection(
+                        fen: state.fen,
+                        gameStatus: state.gameStatus.name,
+                        possibleMoves: state.possibleMoves,
                       ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Text(
-                              'Game Status',
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            ListTile(
-                              title: const Text('FEN'),
-                              subtitle: Text(state.fen),
-                            ),
-                            ListTile(
-                              title: const Text('Possible Moves'),
-                              subtitle: Text(state.possibleMoves.toString()),
-                            ),
-                            const ListTile(
-                              title: Text('Captured Pieces'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             );
@@ -116,6 +93,7 @@ class MoveHistorySection extends StatelessWidget {
           Flexible(
             child: ListView.builder(
               itemCount: lanMoves.length,
+              shrinkWrap: true,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text('Move ${index + 1}'),

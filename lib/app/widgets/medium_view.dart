@@ -3,6 +3,8 @@ import 'package:chess_ui/chess_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chess/app/bloc/game_bloc.dart';
+import 'package:flutter_chess/app/widgets/big_view.dart';
+import 'package:flutter_chess/app/widgets/small_view.dart';
 
 class MediumLayout extends StatelessWidget {
   const MediumLayout({super.key});
@@ -23,6 +25,7 @@ class MediumLayout extends StatelessWidget {
               );
             }
             return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
                   child: Padding(
@@ -40,55 +43,22 @@ class MediumLayout extends StatelessWidget {
                         onSelectPiece: (anSquare) {
                           BlocProvider.of<GameBloc>(context).add(ChessPieceSelected(anSquare));
                         },
-                       onPromotePawn: (lanMove) {
-                        print('Promote Pawn from UI Big Layout');
-                        BlocProvider.of<GameBloc>(context).add(PawnPromotionRequest(lanMove));
-                      },
+                        onPromotePawn: (lanMove) {
+                          print('Promote Pawn from UI Big Layout');
+                          BlocProvider.of<GameBloc>(context).add(PawnPromotionRequest(lanMove));
+                        },
                       ),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: PageView(
+                  child: Row(
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ListTile(
-                            title: const Text('Game Status'),
-                            subtitle: Text(state.gameStatus.name),
-                          ),
-                          ListTile(
-                            title: const Text('FEN'),
-                            subtitle: Text(state.fen),
-                          ),
-                          ListTile(
-                            title: const Text('Possible Moves'),
-                            subtitle: Text(state.possibleMoves.toString()),
-                          ),
-                          const ListTile(
-                            title: Text('Captured Pieces'),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Move History',
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          Expanded(
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text('Move ${index + 1}'),
-                                  subtitle: const Text('Move details here'),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
+                      MoveHistorySection(lanMoves: state.moveHistory),
+                      GameStatusSection(
+                        fen: state.fen,
+                        gameStatus: state.gameStatus.name,
+                        possibleMoves: state.possibleMoves,
                       ),
                     ],
                   ),
