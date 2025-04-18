@@ -12,11 +12,13 @@ class ChessBoard extends StatelessWidget {
   final String fen;
   final void Function(String) onMove;
   final void Function(String) onSelectPiece;
+  final void Function(String) onPromotePawn;
   final List<String> possibleMoves;
   const ChessBoard({
     required this.onMove,
     required this.onSelectPiece,
     required this.possibleMoves,
+    required this.onPromotePawn,
     super.key,
     this.fen = _defaultStartingPosition,
   });
@@ -49,8 +51,9 @@ class ChessBoard extends StatelessWidget {
                             squareData: gameState.squareGrid[(row - 7).abs()][col],
                             isLight: isLightSquare,
                             onMove: onMove,
-                            sideToMove: gameState.sideToMove,
                             onSelectPiece: onSelectPiece,
+                            onPromotePawn: onPromotePawn,
+                            sideToMove: gameState.sideToMove,
                             isHighLighted: possibleMoves.contains(
                               gameState.squareGrid[(row - 7).abs()][col].coordinate.algebraic,
                             ),

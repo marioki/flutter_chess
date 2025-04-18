@@ -40,6 +40,10 @@ class BigLayout extends StatelessWidget {
                       onSelectPiece: (anSquare) {
                         BlocProvider.of<GameBloc>(context).add(ChessPieceSelected(anSquare));
                       },
+                      onPromotePawn: (lanMove) {
+                        print('Promote Pawn from UI Big Layout');
+                        BlocProvider.of<GameBloc>(context).add(PawnPromotionRequest(lanMove));
+                      },
                     ),
                   ),
                 ),

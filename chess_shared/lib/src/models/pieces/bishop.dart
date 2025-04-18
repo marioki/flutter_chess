@@ -11,7 +11,7 @@ class Bishop extends ChessPiece {
   /// Creates a [Bishop] chess piece with the given [side].
   ///
   /// [side] determines whether the Bishop belongs to the white or black side.
-  Bishop({super.side}) : super(pieceType: PieceType.bishop);
+  Bishop(Side side) : super(pieceType: PieceType.bishop, side: side);
 
   /// Calculates all potential moves for the Bishop from the given [originCoordinate].
   ///

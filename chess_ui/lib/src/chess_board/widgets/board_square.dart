@@ -10,6 +10,7 @@ class BoardSquare extends StatelessWidget {
     required this.onMove,
     required this.onSelectPiece,
     required this.sideToMove,
+    required this.onPromotePawn,
     this.isHighLighted = false,
     super.key,
   });
@@ -19,6 +20,7 @@ class BoardSquare extends StatelessWidget {
   final Side sideToMove;
   final void Function(String) onMove;
   final void Function(String) onSelectPiece;
+  final void Function(String) onPromotePawn;
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +82,23 @@ class BoardSquare extends StatelessWidget {
           print('same square');
           return;
         }
+
+        if (pieceDraggable.data.piece?.pieceType == PieceType.pawn &&
+            (squareData.coordinate.rank == 7 || squareData.coordinate.rank == 0)) {
+          // Handle pawn promotion
+          print('promote pawn');
+          final lanMove = Move(
+            pieceType: pieceDraggable.data.piece!.pieceType,
+            origin: pieceDraggable.data.coordinate,
+            target: squareData.coordinate,
+          );
+          onPromotePawn(lanMove.toString());
+          return;
+        }
+
         //for move events
         final lanMove = Move(
-          chessPiece: pieceDraggable.data.piece!,
+          pieceType: pieceDraggable.data.piece!.pieceType,
           origin: pieceDraggable.data.coordinate,
           target: squareData.coordinate,
         );

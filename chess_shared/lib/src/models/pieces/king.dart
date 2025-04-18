@@ -8,7 +8,7 @@ class King extends ChessPiece {
   /// Creates a [King] chess piece with the given [side].
   ///
   /// [side] determines whether the King belongs to the white or black side.
-  King({super.side}) : super(pieceType: PieceType.king);
+  King(Side side) : super(pieceType: PieceType.king, side: side);
 
   /// Calculates all potential moves for the King from the given [originCoordinate].
   ///

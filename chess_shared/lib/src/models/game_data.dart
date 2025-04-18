@@ -26,6 +26,7 @@ class GameData {
 
 enum GameStatus {
   playing,
+  pawnPromotion,
   checkmate,
   draw,
 }

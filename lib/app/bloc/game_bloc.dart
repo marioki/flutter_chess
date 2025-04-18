@@ -20,6 +20,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<ChessPieceMoved>(_onChessPieceMoved);
     on<ChessPieceSelected>(onChessPieceSelected);
     on<ChessGameRestart>(onChessGameRestart);
+    on<PawnPromotionRequest>(onPawnPromotionRequest);
+    on<PawnPromotionConfirmed>(onPawnPromotionConfirmed);
   }
   final CoreChess _coreChess = CoreChess();
 
@@ -43,7 +45,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   void onChessPieceSelected(ChessPieceSelected event, Emitter<GameState> emit) {
     final moves = _coreChess.getLegalMovesForPiece(state.fen, event.anSquare);
     print('*Handler* Calculated moves: $moves');
-    emit(state.copyWith(possibleMoves: moves));
+    emit(
+      state.copyWith(
+        possibleMoves: moves,
+        gameStatus: GameStatus.playing,
+      ),
+    );
   }
 
   FutureOr<void> onChessGameRestart(ChessGameRestart event, Emitter<GameState> emit) {
@@ -53,5 +60,36 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         gameStatus: GameStatus.playing,
       ),
     );
+  }
+
+  FutureOr<void> onPawnPromotionRequest(PawnPromotionRequest event, Emitter<GameState> emit) {
+    print('Pawn promotion event triggered');
+    final gamePosition = GamePosition.fromFEN(state.fen);
+    final move = Move.fromLAN(event.lanMove);
+
+    if (_coreChess.isMoveValid(gamePosition, move) && _coreChess.isMoveLegal(gamePosition, move)) {
+      emit(
+        state.copyWith(
+          gameStatus: GameStatus.pawnPromotion,
+          promotionMove: move,
+        ),
+      );
+    } else {
+      print('Invalid move for pawn promotion');
+      emit(
+        state.copyWith(
+          gameStatus: GameStatus.playing,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> onPawnPromotionConfirmed(PawnPromotionConfirmed event, Emitter<GameState> emit) {
+    final String pieceChar = getPieceTypeString(event.pieceType);
+    final String lanPromotionMove = '${state.promotionMove!.lan}=$pieceChar';
+
+    print('Pawn promotion confirmed with move: $lanPromotionMove');
+
+    add(ChessPieceMoved(lanPromotionMove));
   }
 }

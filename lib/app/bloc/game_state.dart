@@ -6,24 +6,32 @@ class GameState extends Equatable {
     required this.fen,
     required this.gameStatus,
     this.possibleMoves = const [],
+    this.promotionMove,
+    this.promotionPiece,
   });
 
   final String fen;
   final List<String> possibleMoves;
   final GameStatus gameStatus;
+  final Move? promotionMove;
+  final String? promotionPiece;
 
   @override
-  List<Object?> get props => [fen, possibleMoves, gameStatus];
+  List<Object?> get props => [fen, possibleMoves, gameStatus, promotionMove, promotionPiece];
 
   GameState copyWith({
+    required GameStatus gameStatus,
     String? fen,
     List<String>? possibleMoves,
-    GameStatus? gameStatus,
+    Move? promotionMove,
+    String? promotionPiece,
   }) {
     return GameState(
       fen: fen ?? this.fen,
       possibleMoves: possibleMoves ?? this.possibleMoves,
-      gameStatus: gameStatus ?? this.gameStatus,
+      gameStatus: gameStatus,
+      promotionMove: promotionMove,
+      promotionPiece: promotionPiece,
     );
   }
 }

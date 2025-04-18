@@ -34,3 +34,22 @@ class ChessGameRestart extends GameEvent {
   @override
   List<Object> get props => [];
 }
+
+class PawnPromotionRequest extends GameEvent {
+  const PawnPromotionRequest(
+    this.lanMove,
+  );
+  final String lanMove;
+
+  @override
+  List<Object> get props => [lanMove];
+}
+
+class PawnPromotionConfirmed extends GameEvent {
+  const PawnPromotionConfirmed(this.pieceType);
+
+  final PieceType pieceType;
+
+  @override
+  List<Object> get props => [pieceType];
+}

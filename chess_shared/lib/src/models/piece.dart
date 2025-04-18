@@ -19,11 +19,11 @@ abstract class ChessPiece {
 
   ChessPiece({
     required this.pieceType,
-    this.side,
+    required this.side,
   });
 
   /// The color of the chess piece (e.g., white, black).
-  final Side? side;
+  final Side side;
   final PieceType pieceType;
 
   /// Calculates all potential moves for the chess piece from the given [originCoordinate].

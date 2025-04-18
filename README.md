@@ -28,7 +28,7 @@ Handle special moves
   - [x] en passant
 
 Validate standard chess rules
-- [ ] Pawn Promotion
+- [x] Pawn Promotion
 - [x] Check
 - [x] Checkmate
 - [ ] Stalemate

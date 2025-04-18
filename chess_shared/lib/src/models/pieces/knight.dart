@@ -9,7 +9,7 @@ class Knight extends ChessPiece {
   /// Creates a [Knight] chess piece with the given [side].
   ///
   /// [side] determines whether the Knight belongs to the white or black side.
-  Knight({super.side}) : super(pieceType: PieceType.knight);
+  Knight(Side side) : super(pieceType: PieceType.knight, side: side);
 
   /// Calculates all potential moves for the Knight from the given [originCoordinate].
   ///

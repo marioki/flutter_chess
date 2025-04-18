@@ -9,7 +9,7 @@ class Queen extends ChessPiece {
   /// Creates a [Queen] chess piece with the given [side].
   ///
   /// [side] determines whether the Queen belongs to the white or black side.
-  Queen({super.side}) : super(pieceType: PieceType.queen);
+  Queen(Side side) : super(pieceType: PieceType.queen, side: side);
 
   /// Calculates all potential moves for the Queen from the given [originCoordinate].
   ///

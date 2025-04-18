@@ -6,7 +6,7 @@ class CoreChess {
 
   GameData makeMove(String fen, String lanMove) {
     final gamePosition = GamePosition.fromFEN(fen);
-    final move = Move.fromLan(lan: lanMove);
+    final move = Move.fromLAN(lanMove);
 
     // Validate the move using the piece's move set
 
@@ -21,8 +21,7 @@ class CoreChess {
     final newGamePosition = applyMove(gamePosition, move);
 
     // Setting up en passant target square
-    if (move.chessPiece.pieceType == PieceType.pawn &&
-        (move.origin.rank - move.target.rank).abs() == 2) {
+    if (move.pieceType == PieceType.pawn && (move.origin.rank - move.target.rank).abs() == 2) {
       if (gamePosition.sideToMove == Side.white) {
         newGamePosition.enPassant = Coordinate(
           file: move.target.file,
@@ -89,7 +88,7 @@ class CoreChess {
                 piece.getPotientialTargetCoordinate(gamePosition, squareData.coordinate);
             for (var targetCoordinate in potentialTargetCoordinates) {
               final move = Move(
-                chessPiece: piece,
+                pieceType: piece.pieceType,
                 origin: squareData.coordinate,
                 target: targetCoordinate,
               );
@@ -145,12 +144,6 @@ class CoreChess {
     final targetCoordinate = move.target;
     final originSquare = gamePosition.squareGrid[originCoordinate.rank][originCoordinate.file];
     final piece = originSquare.piece;
-    final potientialTargetCoordinates =
-        piece!.getPotientialTargetCoordinate(gamePosition, originCoordinate);
-
-    if (!potientialTargetCoordinates.contains(targetCoordinate)) {
-      throw Exception('Invalid move');
-    }
 
     final newGamePosition = gamePosition.copyWith();
     newGamePosition.squareGrid[targetCoordinate.rank][targetCoordinate.file] = SquareData(
@@ -162,17 +155,43 @@ class CoreChess {
       coordinate: originCoordinate,
     );
 
-    if (move.chessPiece.pieceType == PieceType.pawn && targetCoordinate == gamePosition.enPassant) {
+    if (move.pieceType == PieceType.pawn && targetCoordinate == gamePosition.enPassant) {
       // Handle en passant capture
       final capturedPawnCoordinate = Coordinate(
         file: targetCoordinate.file,
-        rank: targetCoordinate.rank + (piece.side == Side.white ? -1 : 1),
+        rank: targetCoordinate.rank + (piece!.side == Side.white ? -1 : 1),
       );
 
       newGamePosition.squareGrid[capturedPawnCoordinate.rank][capturedPawnCoordinate.file] =
           SquareData(null, coordinate: capturedPawnCoordinate);
     }
+
+    if (move.selectedPromotionPiece != null) {
+      // Handle pawn promotion
+      newGamePosition.squareGrid[move.target.rank][move.target.file] = SquareData(
+        chessPieceFromPieceType(move.selectedPromotionPiece!, piece!.side),
+        coordinate: move.target,
+      );
+    }
+
     return newGamePosition;
+  }
+
+  ChessPiece chessPieceFromPieceType(PieceType pieceType, Side side) {
+    switch (pieceType) {
+      case PieceType.king:
+        return King(side);
+      case PieceType.queen:
+        return Queen(side);
+      case PieceType.rook:
+        return Rook(side);
+      case PieceType.bishop:
+        return Bishop(side);
+      case PieceType.knight:
+        return Knight(side);
+      case PieceType.pawn:
+        return Pawn(side);
+    }
   }
 
   /// Returns a list of possible moves for a piece at the given AN square.
@@ -194,7 +213,7 @@ class CoreChess {
           ..removeWhere(
             (targetCoordinate) {
               final move = Move(
-                chessPiece: originSquareData.piece!,
+                pieceType: originSquareData.piece!.pieceType,
                 origin: originCoordinate,
                 target: targetCoordinate,
               );

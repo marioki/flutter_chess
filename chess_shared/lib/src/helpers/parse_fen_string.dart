@@ -31,7 +31,7 @@ List<List<SquareData>> createSquareGrid(String fenPiecesSegment) {
     } else {
       pieceMatrix[rank].add(
         SquareData(
-          createChessPieceFromFen(char),
+          chessPieceFromFenPieceChar(char),
           coordinate: Coordinate(file: file, rank: rank),
         ),
       );
@@ -45,34 +45,34 @@ List<List<SquareData>> createSquareGrid(String fenPiecesSegment) {
 ///
 /// [char] The FEN character representing a chess piece.
 /// Throws an [ArgumentError] if the character is not a valid FEN piece.
-ChessPiece createChessPieceFromFen(String char) {
+ChessPiece chessPieceFromFenPieceChar(String char) {
   switch (char) {
     case 'p':
-      return Pawn(side: Side.black);
+      return Pawn(Side.black);
     case 'r':
-      return Rook(side: Side.black);
+      return Rook(Side.black);
     case 'n':
-      return Knight(side: Side.black);
+      return Knight(Side.black);
     case 'b':
-      return Bishop(side: Side.black);
+      return Bishop(Side.black);
     case 'q':
-      return Queen(side: Side.black);
+      return Queen(Side.black);
     case 'k':
-      return King(side: Side.black);
+      return King(Side.black);
     case 'P':
-      return Pawn(side: Side.white);
+      return Pawn(Side.white);
     case 'R':
-      return Rook(side: Side.white);
+      return Rook(Side.white);
     case 'N':
-      return Knight(side: Side.white);
+      return Knight(Side.white);
     case 'B':
-      return Bishop(side: Side.white);
+      return Bishop(Side.white);
     case 'Q':
-      return Queen(side: Side.white);
+      return Queen(Side.white);
     case 'K':
-      return King(side: Side.white);
+      return King(Side.white);
     default:
-      throw ArgumentError('Invalid FEN character: $char');
+      throw ArgumentError('*createChessPieceFromFen* Invalid FEN character: $char');
   }
 }
 
@@ -103,21 +103,21 @@ String chessPieceToFen(ChessPiece piece) {
 ///
 /// [char] The character representing a chess piece in a LAN move.
 /// Throws an [ArgumentError] if the character is not a valid LAN piece.
-ChessPiece chessPieceFromLanMove(String char) {
+PieceType chessPieceTypeFromLanMove(String char) {
   switch (char) {
     case '':
-      return Pawn();
+      return PieceType.pawn;
     case 'R':
-      return Rook();
+      return PieceType.rook;
     case 'N':
-      return Knight();
+      return PieceType.knight;
     case 'B':
-      return Bishop();
+      return PieceType.bishop;
     case 'Q':
-      return Queen();
+      return PieceType.queen;
     case 'K':
-      return King();
+      return PieceType.king;
     default:
-      throw ArgumentError('Invalid FEN character: $char');
+      throw ArgumentError('*chessPieceFromLanMove* Invalid FEN character: $char');
   }
 }

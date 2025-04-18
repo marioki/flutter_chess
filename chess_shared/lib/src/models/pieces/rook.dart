@@ -9,7 +9,7 @@ class Rook extends ChessPiece {
   /// Creates a [Rook] chess piece with the given [side].
   ///
   /// [side] determines whether the Rook belongs to the white or black side.
-  Rook({super.side}) : super(pieceType: PieceType.rook);
+  Rook(Side side) : super(pieceType: PieceType.rook, side: side);
 
   /// Calculates all potential moves for the Rook from the given [originCoordinate].
   ///
