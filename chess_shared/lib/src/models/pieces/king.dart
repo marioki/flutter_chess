@@ -93,6 +93,38 @@ class King extends ChessPiece {
       posibleMoves.add(southEast.coordinate);
     }
 
+    //Look for castling
+    if (side == Side.white) {
+      if (gamePosition.whiteKingSideCasttle) {
+        if (gamePosition.squareGrid[0][5].piece == null &&
+            gamePosition.squareGrid[0][6].piece == null) {
+          posibleMoves.add(gamePosition.squareGrid[0][6].coordinate);
+        }
+      }
+      if (gamePosition.whiteQueenSideCasttle) {
+        if (gamePosition.squareGrid[0][3].piece == null &&
+            gamePosition.squareGrid[0][2].piece == null &&
+            gamePosition.squareGrid[0][1].piece == null) {
+          posibleMoves.add(gamePosition.squareGrid[0][2].coordinate);
+        }
+      }
+    }
+    if (side == Side.black) {
+      if (gamePosition.blackKingSideCasttle) {
+        if (gamePosition.squareGrid[7][5].piece == null &&
+            gamePosition.squareGrid[7][6].piece == null) {
+          posibleMoves.add(gamePosition.squareGrid[7][6].coordinate);
+        }
+      }
+      if (gamePosition.blackQueenSideCasttle) {
+        if (gamePosition.squareGrid[7][3].piece == null &&
+            gamePosition.squareGrid[7][2].piece == null &&
+            gamePosition.squareGrid[7][1].piece == null) {
+          posibleMoves.add(gamePosition.squareGrid[7][2].coordinate);
+        }
+      }
+    }
+
     return posibleMoves;
   }
 

@@ -16,19 +16,43 @@
         "lib/main_development.dart"
       ]
     },
+    //add profile mode
+    {
+      "name": "Launch profile",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_development.dart",
+      "flutterMode": "profile",
+      "args": [
+        "--flavor",
+        "profile",
+        "--target",
+        "lib/main_development.dart"
+      ]
+    },
     {
       "name": "Launch staging",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_staging.dart",
-      "args": ["--flavor", "staging", "--target", "lib/main_staging.dart"]
+      "args": [
+        "--flavor",
+        "staging",
+        "--target",
+        "lib/main_staging.dart"
+      ]
     },
     {
       "name": "Launch production",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_production.dart",
-      "args": ["--flavor", "production", "--target", "lib/main_production.dart"]
+      "args": [
+        "--flavor",
+        "production",
+        "--target",
+        "lib/main_production.dart"
+      ]
     }
   ]
 }

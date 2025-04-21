@@ -129,10 +129,56 @@ class CoreChess {
      * 
      */
 
+    //Special case for castling
+
+    if (isCastlingMove(move)) {
+      if (isCastleLegal(gamePosition, move)) {
+        return true;
+      } else {
+        print('Castling is not legal');
+        return false;
+      }
+    }
+
     final futureGamePosition = applyMove(gamePosition, move);
     final ownKingCoordinate = getOwnKingCoordinate(futureGamePosition);
 
     return !isKingInCheck(futureGamePosition, ownKingCoordinate);
+  }
+
+  bool isCastleLegal(GamePosition gamePosition, Move move) {
+    if (isKingInCheck(gamePosition, getKingCoordinates(gamePosition, gamePosition.sideToMove))) {
+      print('King is in check, cannot castle');
+    }
+
+    if (gamePosition.sideToMove == Side.white) {
+      if (move.target.file == 2) {
+        if (isKingInCheck(gamePosition, const Coordinate(file: 3, rank: 0)) ||
+            isKingInCheck(gamePosition, const Coordinate(file: 2, rank: 0))) {
+          return false;
+        }
+      }
+      if (move.target.file == 6) {
+        if (isKingInCheck(gamePosition, const Coordinate(file: 5, rank: 0)) ||
+            isKingInCheck(gamePosition, const Coordinate(file: 6, rank: 0))) {
+          return false;
+        }
+      }
+    } else {
+      if (move.target.file == 2) {
+        if (isKingInCheck(gamePosition, const Coordinate(file: 3, rank: 7)) ||
+            isKingInCheck(gamePosition, const Coordinate(file: 2, rank: 7))) {
+          return false;
+        }
+      }
+      if (move.target.file == 6) {
+        if (isKingInCheck(gamePosition, const Coordinate(file: 5, rank: 7)) ||
+            isKingInCheck(gamePosition, const Coordinate(file: 6, rank: 7))) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   /// Applies a move to the board state and returns the new board state.
@@ -155,8 +201,8 @@ class CoreChess {
       coordinate: originCoordinate,
     );
 
+    // Handle en passant capture
     if (move.pieceType == PieceType.pawn && targetCoordinate == gamePosition.enPassant) {
-      // Handle en passant capture
       final capturedPawnCoordinate = Coordinate(
         file: targetCoordinate.file,
         rank: targetCoordinate.rank + (piece!.side == Side.white ? -1 : 1),
@@ -166,12 +212,74 @@ class CoreChess {
           SquareData(null, coordinate: capturedPawnCoordinate);
     }
 
+    // Handle pawn promotion
     if (move.selectedPromotionPiece != null) {
-      // Handle pawn promotion
       newGamePosition.squareGrid[move.target.rank][move.target.file] = SquareData(
         chessPieceFromPieceType(move.selectedPromotionPiece!, piece!.side),
         coordinate: move.target,
       );
+    }
+    // Handle castling
+    if(isCastlingMove(move)){
+      if (move.target.file == 2) {
+        // Queen-side castling
+        newGamePosition.squareGrid[originCoordinate.rank][0] = SquareData(
+          null,
+          coordinate: Coordinate(rank: originCoordinate.rank, file: 0),
+        );
+        newGamePosition.squareGrid[originCoordinate.rank][3] = SquareData(
+          chessPieceFromPieceType(PieceType.rook, piece!.side),
+          coordinate: Coordinate(rank: originCoordinate.rank, file: 3),
+        );
+      } else if (move.target.file == 6) {
+        // King-side castling
+        newGamePosition.squareGrid[originCoordinate.rank][7] = SquareData(
+          null,
+          coordinate: Coordinate(rank: originCoordinate.rank, file: 7),
+        );
+        newGamePosition.squareGrid[originCoordinate.rank][5] = SquareData(
+          chessPieceFromPieceType(PieceType.rook, piece!.side),
+          coordinate: Coordinate(rank: originCoordinate.rank, file: 5),
+        );
+      }
+    }
+
+    //Remove castling rights if the king or rook has moved
+    if (gamePosition.whiteQueenSideCasttle ||
+        gamePosition.whiteKingSideCasttle ||
+        gamePosition.blackKingSideCasttle ||
+        gamePosition.blackQueenSideCasttle) {
+      if (piece!.pieceType == PieceType.king) {
+        if (piece.side == Side.white) {
+          print('White king moved...Removing All White castling rights');
+          newGamePosition
+            ..whiteKingSideCasttle = false
+            ..whiteQueenSideCasttle = false;
+        } else {
+          print('black king moved...Removing All Black castling rights');
+          newGamePosition
+            ..blackKingSideCasttle = false
+            ..blackQueenSideCasttle = false;
+        }
+      } else if (piece.pieceType == PieceType.rook) {
+        if (piece.side == Side.white) {
+          if (originCoordinate.file == 0) {
+            print('White queen side rook moved...Removing White queen side castling rights');
+            newGamePosition.whiteQueenSideCasttle = false;
+          } else if (originCoordinate.file == 7) {
+            print('White king side rook moved...Removing White king side castling rights');
+            newGamePosition.whiteKingSideCasttle = false;
+          }
+        } else {
+          if (originCoordinate.file == 0) {
+            print('Black queen side rook moved...Removing Black queen side castling rights');
+            newGamePosition.blackQueenSideCasttle = false;
+          } else if (originCoordinate.file == 7) {
+            print('Black king side rook moved...Removing Black king side castling rights');
+            newGamePosition.blackKingSideCasttle = false;
+          }
+        }
+      }
     }
 
     return newGamePosition;
@@ -274,5 +382,15 @@ class CoreChess {
       }
     }
     return false;
+  }
+
+  bool isCastlingMove(Move move) {
+    if (move.pieceType == PieceType.king &&
+        (move.target.file - move.origin.file).abs() == 2 &&
+        (move.target.rank - move.origin.rank).abs() == 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

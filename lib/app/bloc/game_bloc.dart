@@ -9,20 +9,14 @@ part 'game_event.dart';
 part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  static const String initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0';
-  GameBloc()
-      : super(
-          const GameState(
-            fen: initialFen,
-            gameStatus: GameStatus.playing,
-          ),
-        ) {
+  GameBloc() : super(const GameState(fen: initialFen, gameStatus: GameStatus.playing)) {
     on<ChessPieceMoved>(_onChessPieceMoved);
     on<ChessPieceSelected>(onChessPieceSelected);
     on<ChessGameRestart>(onChessGameRestart);
     on<PawnPromotionRequest>(onPawnPromotionRequest);
     on<PawnPromotionConfirmed>(onPawnPromotionConfirmed);
   }
+  static const String initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0';
   final CoreChess _coreChess = CoreChess();
 
   void _onChessPieceMoved(ChessPieceMoved event, Emitter<GameState> emit) {

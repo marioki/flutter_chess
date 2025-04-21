@@ -26,25 +26,27 @@ class BigLayout extends StatelessWidget {
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 8,
-                  ),
-                  child: Center(
-                    child: ChessBoard(
-                      fen: state.fen,
-                      possibleMoves: state.possibleMoves,
-                      onMove: (lanMove) {
-                        BlocProvider.of<GameBloc>(context).add(ChessPieceMoved(lanMove));
-                      },
-                      onSelectPiece: (anSquare) {
-                        BlocProvider.of<GameBloc>(context).add(ChessPieceSelected(anSquare));
-                      },
-                      onPromotePawn: (lanMove) {
-                        print('Promote Pawn from UI Big Layout');
-                        BlocProvider.of<GameBloc>(context).add(PawnPromotionRequest(lanMove));
-                      },
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 8,
+                    ),
+                    child: Center(
+                      child: ChessBoard(
+                        fen: state.fen,
+                        possibleMoves: state.possibleMoves,
+                        onMove: (lanMove) {
+                          BlocProvider.of<GameBloc>(context).add(ChessPieceMoved(lanMove));
+                        },
+                        onSelectPiece: (anSquare) {
+                          BlocProvider.of<GameBloc>(context).add(ChessPieceSelected(anSquare));
+                        },
+                        onPromotePawn: (lanMove) {
+                          print('Promote Pawn from UI Big Layout');
+                          BlocProvider.of<GameBloc>(context).add(PawnPromotionRequest(lanMove));
+                        },
+                      ),
                     ),
                   ),
                 ),
