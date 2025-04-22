@@ -31,7 +31,7 @@ Validate standard chess rules
 - [x] Pawn Promotion
 - [x] Check
 - [x] Checkmate
-- [ ] Stalemate
+- [x] Stalemate
 
 - [ ] Game log for move history (Score Sheet)
 - [ ] Undo and redo functionality
