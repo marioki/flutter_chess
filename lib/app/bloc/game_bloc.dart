@@ -29,6 +29,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           possibleMoves: [],
           gameStatus: gameData.status,
           moveHistory: List.from(state.moveHistory)..add(event.lanMove),
+          winner: gameData.winner,
         ),
       );
     } catch (exception) {

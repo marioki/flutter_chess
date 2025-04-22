@@ -6,6 +6,7 @@ class GameState extends Equatable {
     required this.fen,
     required this.gameStatus,
     this.possibleMoves = const [],
+    this.winner,
     this.promotionMove,
     this.promotionPiece,
     this.moveHistory = const [],
@@ -14,6 +15,7 @@ class GameState extends Equatable {
   final String fen;
   final List<String> possibleMoves;
   final GameStatus gameStatus;
+  final Side? winner;
   final Move? promotionMove;
   final String? promotionPiece;
   final List<String> moveHistory;
@@ -23,6 +25,7 @@ class GameState extends Equatable {
 
   GameState copyWith({
     required GameStatus gameStatus,
+    Side? winner,
     String? fen,
     List<String>? possibleMoves,
     Move? promotionMove,
@@ -33,6 +36,7 @@ class GameState extends Equatable {
       fen: fen ?? this.fen,
       possibleMoves: possibleMoves ?? this.possibleMoves,
       gameStatus: gameStatus,
+      winner: winner ?? this.winner,
       promotionMove: promotionMove,
       promotionPiece: promotionPiece,
       moveHistory: moveHistory ?? this.moveHistory,

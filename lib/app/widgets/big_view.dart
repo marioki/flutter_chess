@@ -14,15 +14,6 @@ class BigLayout extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<GameBloc, GameState>(
           builder: (context, state) {
-            if (state.gameStatus == GameStatus.checkmate) {
-              return const Center(
-                child: Text('Checkmate!'),
-              );
-            } else if (state.gameStatus == GameStatus.draw) {
-              return const Center(
-                child: Text('Draw!'),
-              );
-            }
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -29,4 +29,8 @@ enum GameStatus {
   pawnPromotion,
   checkmate,
   draw,
+  stalemate,
+  insufficientMaterial,
+  threefoldRepetition,
+  fiftyMoveRule
 }

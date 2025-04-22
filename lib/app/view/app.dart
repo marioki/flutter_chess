@@ -50,22 +50,12 @@ class ChessGameLayout extends StatelessWidget {
         bloc: BlocProvider.of<GameBloc>(context),
         listener: (BuildContext gameContext, state) {
           if (state.gameStatus == GameStatus.checkmate) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'Check Mate!',
-                ),
-              ),
-            );
+            print('Checkmate ui triggered');
+            _showCheckmateDialog(gameContext, state.winner!);
           }
-          if (state.gameStatus == GameStatus.draw) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'Draw!',
-                ),
-              ),
-            );
+          if (state.gameStatus == GameStatus.stalemate) {
+            print('Stalemate ui triggered');
+            _showStalemateDialog(gameContext);
           }
 
           if (state.gameStatus == GameStatus.pawnPromotion) {
@@ -88,7 +78,6 @@ class ChessGameLayout extends StatelessWidget {
     );
   }
 
-  // This function will show the pawn promotion dialog and handle the bloc event correctly
   void _showPawnPromotionDialog(BuildContext dialogContext) {
     showDialog<void>(
       context: dialogContext,
@@ -141,6 +130,50 @@ class ChessGameLayout extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               child: const Text('Knight'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showCheckmateDialog(BuildContext dialogContext, Side winner) {
+    showDialog<void>(
+      context: dialogContext,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Checkmate'),
+          content: Text('${winner.name} wins!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                BlocProvider.of<GameBloc>(dialogContext).add(const ChessGameRestart());
+                Navigator.of(context).pop();
+              },
+              child: const Text('Restart'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showStalemateDialog(BuildContext dialogContext) {
+    showDialog<void>(
+      context: dialogContext,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Stalemate'),
+          content: const Text(''),
+          actions: [
+            TextButton(
+              onPressed: () {
+                BlocProvider.of<GameBloc>(dialogContext).add(const ChessGameRestart());
+                Navigator.of(context).pop();
+              },
+              child: const Text('Restart'),
             ),
           ],
         );

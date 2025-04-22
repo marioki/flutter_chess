@@ -52,12 +52,45 @@ class CoreChess {
   }
 
   GameData generateGameData(GamePosition gamePosition) {
+    //Check for game ending conditions
     if (gamePosition.halfMoveClock >= 50) {
       print('Draw by 50-move rule');
       return GameData(
         fen: gamePosition.toFenString(),
         status: GameStatus.draw,
       );
+    }
+
+    // Check for stalemate
+    if (!isKingInCheck(gamePosition, getOwnKingCoordinate(gamePosition))) {
+      final potentialMoves = <Move>[];
+      for (var rank = 0; rank < 8; rank++) {
+        for (var file = 0; file < 8; file++) {
+          final squareData = gamePosition.squareGrid[rank][file];
+          if (squareData.piece?.side == gamePosition.sideToMove) {
+            final piece = squareData.piece!;
+            final potentialTargetCoordinates =
+                piece.getPotientialTargetCoordinate(gamePosition, squareData.coordinate);
+            for (final targetCoordinate in potentialTargetCoordinates) {
+              final move = Move(
+                pieceType: piece.pieceType,
+                origin: squareData.coordinate,
+                target: targetCoordinate,
+              );
+
+              if (isMoveLegal(gamePosition, move)) {
+                potentialMoves.add(move);
+              }
+            }
+          }
+        }
+      }
+      if (potentialMoves.isEmpty) {
+        return GameData(
+          fen: gamePosition.toFenString(),
+          status: GameStatus.stalemate,
+        );
+      }
     }
 
     if (isKingInMate(gamePosition)) {
@@ -79,8 +112,8 @@ class CoreChess {
     if (isKingInCheck(gamePosition, ownKingCoordinate)) {
       // Check if there are any legal moves for the current player
       final potentialMoves = <Move>[];
-      for (int rank = 0; rank < 8; rank++) {
-        for (int file = 0; file < 8; file++) {
+      for (var rank = 0; rank < 8; rank++) {
+        for (var file = 0; file < 8; file++) {
           final squareData = gamePosition.squareGrid[rank][file];
           if (squareData.piece?.side == gamePosition.sideToMove) {
             final piece = squareData.piece!;
@@ -220,7 +253,7 @@ class CoreChess {
       );
     }
     // Handle castling
-    if(isCastlingMove(move)){
+    if (isCastlingMove(move)) {
       if (move.target.file == 2) {
         // Queen-side castling
         newGamePosition.squareGrid[originCoordinate.rank][0] = SquareData(
@@ -340,8 +373,8 @@ class CoreChess {
 
   Coordinate getOwnKingCoordinate(GamePosition gamePosition) {
     final board = gamePosition.squareGrid;
-    for (int rank = 0; rank < 8; rank++) {
-      for (int file = 0; file < 8; file++) {
+    for (var rank = 0; rank < 8; rank++) {
+      for (var file = 0; file < 8; file++) {
         final squareData = board[rank][file];
         if (squareData.piece?.pieceType == PieceType.king &&
             squareData.piece?.side == gamePosition.sideToMove) {
@@ -355,8 +388,8 @@ class CoreChess {
 
   Coordinate getKingCoordinates(GamePosition gamePosition, Side side) {
     final board = gamePosition.squareGrid;
-    for (int rank = 0; rank < 8; rank++) {
-      for (int file = 0; file < 8; file++) {
+    for (var rank = 0; rank < 8; rank++) {
+      for (var file = 0; file < 8; file++) {
         final squareData = board[rank][file];
         if (squareData.piece?.pieceType == PieceType.king && squareData.piece?.side == side) {
           print('$side King found at ${squareData.coordinate.algebraic}');

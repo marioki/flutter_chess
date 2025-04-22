@@ -2,6 +2,7 @@
 import 'package:chess_shared/chess_shared.dart';
 import 'package:chess_ui/chess_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_chess/app/bloc/game_bloc.dart';
@@ -98,6 +99,14 @@ class GameStatusSection extends StatelessWidget {
           ListTile(
             title: const Text('FEN'),
             subtitle: Text(fen),
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: fen));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('FEN copied to clipboard!'),
+                ),
+              );
+            },
           ),
           ListTile(
             title: const Text('Possible Moves'),
