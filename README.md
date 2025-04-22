@@ -24,7 +24,7 @@ Add logic for chess piece movements
   - [x] Queen
 
 Handle special moves
-  - [ ] castling
+  - [x] castling
   - [x] en passant
 
 Validate standard chess rules
